@@ -1,0 +1,74 @@
+ratings = list();
+loopHack = "loop.".repeat(1000);
+loopHackList = loopHack.toList(".");
+page = 1;
+request = Map();
+//request.putAll({"module": "quotes"});
+return_val = Collection();
+param = Map();
+param.put("apiKey","ScoroAPI_0fb3e0606295d3d");
+param.put("lang","eng");
+param.put("company_account_id","projectpartners");
+param.put("detailed_response",true);
+param.put("request",{});
+for each  loop in loopHackList
+{
+	param.putAll({"page":page});
+	req = invokeurl
+	[
+		url :"https://projectpartners.scoro.com/api/v2/ratings/list"
+		type :POST
+		parameters:param.toString()
+	];
+	data = req.get("data");
+	ratings.addAll(data);
+	if(data.size() < 25)
+	{
+		break;
+	}
+	else
+	{
+		page = page + 1;
+	}
+}
+for each  rating in ratings
+{
+	res = Ratings[Item_ID == rating.get("item_id")];
+	response = Partners[Partner_ID == rating.get("c_partner")];
+	info response.Full_Name;
+	if(res.ID == null)
+	{
+		new_rating = insert into Ratings
+		[
+			Item_ID=rating.get("item_id")
+			Added_User=zoho.loginuser
+			Status=rating.get("status")
+			Task=rating.get("c_task")
+			Partner_Rating=rating.get("c_partner_rating")
+			Title=rating.get("c_title")
+			End_Date=rating.get("c_end_date")
+			Role=toString(rating.get("c_role"))
+			Company_Name=rating.get("c_companyname")
+			SoW=rating.get("c_sow")
+			Start_Date=rating.get("c_date")
+			Timesheet_Approver=toString(rating.get("c_timesheet_approver"))
+			Timesheet_Approver_Rating=rating.get("c_ta_rating")
+			Partner = response.Full_Name
+		];
+	}
+	else
+	{
+		res.Status=rating.get("status");
+		res.Task=rating.get("c_task");
+		res.Partner_Rating=toNumber(rating.get("c_partner_rating"));
+		res.Title=rating.get("c_title");
+		res.End_Date=rating.get("c_end_date");
+		res.Role=toString(rating.get("c_role"));
+		res.Company_Name=rating.get("c_companyname");
+		res.SoW=rating.get("c_sow");
+		res.Start_Date=rating.get("c_date");
+		res.Timesheet_Approver=toString(rating.get("c_timesheet_approver"));
+		res.Timesheet_Approver_Rating=toNumber(rating.get("c_ta_rating"));
+		res.Partner = response.Full_Name;
+	}
+}
