@@ -35,7 +35,6 @@ for each  rating in ratings
 {
 	res = Ratings[Item_ID == rating.get("item_id")];
 	response = Partners[Partner_ID == rating.get("c_partner")];
-	info response.Full_Name;
 	if(res.ID == null)
 	{
 		new_rating = insert into Ratings
