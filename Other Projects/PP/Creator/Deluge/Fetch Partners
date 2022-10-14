@@ -1,0 +1,62 @@
+partners = list();
+loopHack = "loop.".repeat(1000);
+loopHackList = loopHack.toList(".");
+page = 1;
+request = Map();
+//request.putAll({"module": "quotes"});
+return_val = Collection();
+param = Map();
+param.put("apiKey","ScoroAPI_0fb3e0606295d3d");
+param.put("lang","eng");
+param.put("company_account_id","projectpartners");
+param.put("detailed_response",true);
+param.put("request",{});
+for each  loop in loopHackList
+{
+	param.putAll({"page":page});
+	req = invokeurl
+	[
+		url :"https://projectpartners.scoro.com/api/v2/partners/list"
+		type :POST
+		parameters:param.toString()
+	];
+	data = req.get("data");
+	partners.addAll(data);
+	if(data.size() < 25)
+	{
+		break;
+	}
+	else
+	{
+		page = page + 1;
+	}
+}
+for each  partner in partners
+{
+	res = Partners[Partner_ID == partner.get("item_id")];
+	if(res.ID == null)
+	{
+		new_partner = insert into Partners
+		[
+			Partner_ID=partner.get("item_id")
+			Added_User=zoho.loginuser
+			Status=partner.get("status")
+			Position=partner.get("c_position")
+			Line_Manager=partner.get("c_line_manager")
+			First_Name=partner.get("c_firstname")
+			Full_Name=partner.get("c_fullname")
+			Email_address=partner.get("c_emailaddress")
+			Last_Name=partner.get("c_lastname")
+		];
+	}
+	else
+	{
+		res.Status=partner.get("status");
+		res.Position=partner.get("c_position");
+		res.Line_Manager=partner.get("c_line_manager");
+		res.First_Name=partner.get("c_firstname");
+		res.Full_Name=partner.get("c_fullname");
+		res.Email_address=partner.get("c_emailaddress");
+		res.Last_Name=partner.get("c_lastname");
+	}
+}
