@@ -1,0 +1,50 @@
+companies = list();
+loopHack = "loop.".repeat(1000);
+loopHackList = loopHack.toList(".");
+page = 1;
+request = Map();
+//request.putAll({"module": "quotes"});
+return_val = Collection();
+param = Map();
+param.put("apiKey","ScoroAPI_0fb3e0606295d3d");
+param.put("lang","eng");
+param.put("company_account_id","projectpartners");
+param.put("detailed_response",true);
+param.put("request",{});
+for each  loop in loopHackList
+{
+	param.putAll({"page":page});
+	req = invokeurl
+	[
+		url :"https://projectpartners.scoro.com/api/v2/companies/list"
+		type :POST
+		parameters:param.toString()
+	];
+	data = req.get("data");
+	companies.addAll(data);
+	if(data.size() < 25)
+	{
+		break;
+	}
+	else
+	{
+		page = page + 1;
+	}
+}
+for each  company in companies
+{
+	res = Client[Company_ID == company.get("contact_id")];
+	if(res.ID == null)
+	{
+		new_company = insert into Client
+		[
+			Added_User=zoho.loginuser
+			Company_ID=company.get("contact_id")
+			Company_Name=company.get("name")
+		];
+	}
+	else
+	{
+		res.Company_Name=company.get("name");
+	}
+}
