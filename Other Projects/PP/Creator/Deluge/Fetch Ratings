@@ -35,6 +35,8 @@ for each  rating in ratings
 {
 	res = Ratings[Item_ID == rating.get("item_id")];
 	response = Partners[Partner_ID == rating.get("c_partner")];
+	//info rating;
+	req1 = Client[Company_Name == rating.get("c_companyname")];
 	if(res.ID == null)
 	{
 		new_rating = insert into Ratings
@@ -47,12 +49,15 @@ for each  rating in ratings
 			Title=rating.get("c_title")
 			End_Date=rating.get("c_end_date")
 			Role=toString(rating.get("c_role"))
-			Company_Name=rating.get("c_companyname")
+			Company_Name=req1.ID
 			SoW=rating.get("c_sow")
 			Start_Date=rating.get("c_date")
 			Timesheet_Approver=toString(rating.get("c_timesheet_approver"))
 			Timesheet_Approver_Rating=rating.get("c_ta_rating")
-			Partner = response.Full_Name
+			Partner=response.ID
+			Partner_Comments=rating.get("c_partner_comments")
+			Planned_Hours=toNumber(rating.get("c_planned_work_time"))
+			Actual_Hours=toNumber(rating.get("c_actual_work_time"))
 		];
 	}
 	else
@@ -63,11 +68,14 @@ for each  rating in ratings
 		res.Title=rating.get("c_title");
 		res.End_Date=rating.get("c_end_date");
 		res.Role=toString(rating.get("c_role"));
-		res.Company_Name=rating.get("c_companyname");
+		res.Company_Name=req1.ID;
 		res.SoW=rating.get("c_sow");
 		res.Start_Date=rating.get("c_date");
 		res.Timesheet_Approver=toString(rating.get("c_timesheet_approver"));
 		res.Timesheet_Approver_Rating=toNumber(rating.get("c_ta_rating"));
-		res.Partner = response.Full_Name;
+		res.Partner=response.ID;
+		res.Partner_Comments=rating.get("c_partner_comments");
+		res.Planned_Hours=toNumber(rating.get("c_planned_work_time"));
+		res.Actual_Hours=toNumber(rating.get("c_actual_work_time"));
 	}
 }
