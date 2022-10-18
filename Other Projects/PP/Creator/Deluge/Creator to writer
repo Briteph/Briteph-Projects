@@ -1,0 +1,22 @@
+void defaultFunction(Ratings selected_ratings)
+{
+	zoho.writer.getMergeFields("9xd2yf04bcc420d894c63a4eaa6f56c472570","writer_connection");
+	for each  rating in selected_ratings
+	{
+		req = Partners[ID == rating.Partner];
+		timeweek = rating.Start_Date + " - " + rating.End_Date;
+		writerList = list();
+		new_writer = Map();
+		new_writer.put("TimeSheet.Partner",req.Full_Name);
+		new_writer.put("TimeSheet.Week",timeweek);
+		new_writer.put("TimeSheet.Hours",rating.Actual_Hours);
+		writerList.add(new_writer);
+		timeSheet = Map();
+		timeSheet.put("TimeSheet",writerList);
+		output_settings = Map();
+		output_settings.put("doc_name","Timesheet for Client Approval" + ' - ' + req.Full_Name);
+		output_settings.put("folder_id","9xd2yb8af84b66d944acbb30a5722aad60203");
+		res = zoho.writer.mergeAndStore("9xd2yf04bcc420d894c63a4eaa6f56c472570",timeSheet,output_settings,"writer_connection");
+		info res;
+	}
+}
