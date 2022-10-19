@@ -1,0 +1,50 @@
+
+// jobPos = zoho.crm.getRecordById("Resource_Requests",recordID,"zcrm_sb");
+// info jobPos;
+req = zoho.recruit.getRecordById("custommodule3",recordID,"recruit_connection");
+info req;
+// req2 = zoho.recruit.getRecordById("JobOpenings",recordID,"recruit_connection");
+// info req2;
+state = req.get("Status");
+dealID = req.get("Deal ID");
+crmID = req.get("CRM ID");
+new_jobopen = Map();
+new_jobopen.put("Client Name",ifNull(req.get("Resource Request Name"),"null"));
+new_jobopen.put("Job Type",req.get("Job type"));
+new_jobopen.put("Posting Title",ifNull(req.get("Role title"),"null"));
+new_jobopen.put("Number of Positions",req.get("No. of roles to fill"));
+new_jobopen.put("Minimum Rate",req.get("Minimum Salary"));
+new_jobopen.put("Maximum Rate",req.get("Maximum Salary"));
+new_jobopen.put("Actual Project",ifNull(req.get("Name of client project"),"null"));
+new_jobopen.put("Skillset",req.get("Skillset"));
+new_jobopen.put("CRM ID",req.get("CRM ID"));
+new_jobopen.put("Actual Client","UPDATE ME");
+new_jobopen.put("Opportunity Name_ID",req.get("Opportunity Lookup_ID"));
+new_jobopen.put("Confidence Level",req.get("Confidence level"));
+new_jobopen.put("Skillset",req.get("Skillset"));
+new_jobopen.put("Target Date",req.get("Target Start Date"));
+new_jobopen.put("Hydrogen Referral Fee",req.get("Hydrogen Referral %"));
+new_jobopen.put("Hydrogen Sourcing Fee %",req.get("Hydrogen Sourcing %"));
+new_jobopen.put("Date of Request",req.get("Target Start Date"));
+req1 = zoho.recruit.getRecordById("custommodule4",req.get("Opportunity Lookup_ID"),"recruit_connection");
+new_jobopen.put("Client Name",req1.get("Account Name"));
+new_jobopen.put("Contact Name",req1.get("Contact Name"));
+statusMap = Map();
+statusMap.put("Status",state);
+rep = zoho.recruit.addRecord("JobOpenings",new_jobopen,0,true,"recruit_connection");
+// //update status in CRM
+info rep;
+updateCRM = zoho.crm.updateRecord("Resource_Requests",crmID,statusMap,{"trigger":{"workflow","blueprint"}},"crm_connection");
+jobname = req.get("Resource Request Name");
+// //search jobopening
+// searchJobOpening = zoho.recruit.searchRecords("JobOpenings","Client Name|=|" + jobname + " ",1,100,"ALL","recruit_connection");
+// info searchJobOpening;
+// list_ = searchJobOpening.get(0);
+// jobID = list_.get("JOBOPENINGID");
+reqjobopening = zoho.recruit.getRecordById("JobOpenings",rep.get("Id"),"recruit_connection");
+posttitle = reqjobopening.get("Posting Title");
+//update lookup in resource_requests
+updateLookup = zoho.recruit.updateRecord("custommodule3",recordID,{"Job Opening":posttitle},false,"recruit_connection");
+//update lookup in jobopening
+updateLookupJobopenings = zoho.recruit.updateRecord("Jobopenings",rep.get("Id"),{"Opportunity Name":dealID},false,"recruit_connection");
+info updateLookupJobopenings;
