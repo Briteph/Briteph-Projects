@@ -1,0 +1,25 @@
+
+req = zoho.recruit.getRecordById("Candidates",recordID,"recruit_connection");
+//req = zoho.crm.getRecordById("Partners", recordID, "crm_connection");
+//info req;
+new_partner = Map();
+fullname = req.get("First Name") + " " + req.get("Last Name");
+new_partner.put("Name",fullname);
+new_partner.put("First_Name",req.get("First Name"));
+new_partner.put("Last_Name",req.get("Last Name"));
+new_partner.put("Email",req.get("Email"));
+new_partner.put("Currency",req.get("Currency"));
+new_partner.put("Exchange_Rate",req.get("Exchange Rate"));
+new_partner.put("Website",req.get("Website"));
+new_partner.put("Mobile",req.get("Mobile"));
+new_partner.put("Phone",req.get("Phone"));
+new_partner.put("Street",req.get("Street"));
+new_partner.put("City",req.get("City"));
+new_partner.put("Country",req.get("Country"));
+new_partner.put("Postal_Code",req.get("Zip Code"));
+new_partner.put("State",req.get("State"));
+new_partner.put("Client_Name",Null);
+r_link = "https://recruit.zoho.eu/recruit/org20078625306/EntityInfo.do?module=Candidates&id=" + recordID + "&submodule=Candidates";
+new_partner.put("Recruit_Link",r_link);
+res = zoho.crm.createRecord("Partners",new_partner,{"trigger":{"workflow","blueprint"}},"crm_connection");
+info res;
