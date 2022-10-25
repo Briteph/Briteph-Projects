@@ -1,0 +1,23 @@
+zoho.writer.getMergeFields("9ywmq44bcf019a0224562827b0aaac16bd69c","writer_connection");
+form_content = Map();
+form_content.put("terms",input.terms);
+form_content.put("payment_date",input.payment_date);
+form_content.put("mon_ann",input.mon_ann);
+form_content.put("user_licenses",input.user_licenses);
+form_content.put("who_own",input.who_own);
+form_content.put("cost",input.cost);
+form_content.put("why_chosen",input.why_chosen);
+form_content.put("log_in",input.log_in);
+merge_values = Map();
+mergedData = {"data":form_content};
+merge_values.put("merge_data",mergedData);
+res = zoho.writer.mergeAndDownload("9ywmq44bcf019a0224562827b0aaac16bd69c","pdf",merge_values,"writer_connection");
+
+sendmail
+[
+	from :zoho.adminuserid
+	to :"kazueyah@gmail.com"
+	subject :"Procurement Form"
+	message :"This is a test"
+	Attachments :file:res
+]
