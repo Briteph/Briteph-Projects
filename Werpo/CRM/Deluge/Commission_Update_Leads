@@ -1,0 +1,19 @@
+voidCommission_Update_Leads(Int leadId,String type,String Amount) {
+if(type == "Con Ed- Free Area")
+{
+	newvalue = Amount.toDecimal() * 0.05;
+}
+if(type == "Con Ed- Non Free Area")
+{
+	newvalue = Amount.toDecimal() * 0.10;
+}
+if(type == "PSEG - Non Free")
+{
+	newvalue = Amount.toDecimal() * 0.10;
+}
+mp = Map();
+mp.put("Commission",newvalue.toString());
+update = zoho.crm.updateRecord("Leads",leadId.toLong(),mp);
+info mp;
+info update;
+}
