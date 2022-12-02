@@ -1,0 +1,11 @@
+void Create_Projects_for_Closed_Potentials(String ProjName,String PortalName,String TemplateID,String Description,Date startdate,Date enddate) {
+createMap = Map();
+createMap.put("name",ProjName);
+// Provide name of the project to be created
+createMap.put("description",Description);
+createMap.put("start_date",startdate.toString("MM-dd-yyyy"));
+createMap.put("end_date",enddate.toString("MM-dd-yyyy"));
+createMap.put("template_id",TemplateID);
+response = zoho.projects.createProject(PortalName,createMap);
+info response;
+}
