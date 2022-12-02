@@ -1,0 +1,13 @@
+string customFieldGetter(list customFields, string fieldName)
+{
+// this is to get a custom field value from clickup data
+for each  field in customFields
+{
+	name = field.get("name");
+	if(name == fieldName)
+	{
+		value = field.get("value");
+	}
+}
+return value;
+}
