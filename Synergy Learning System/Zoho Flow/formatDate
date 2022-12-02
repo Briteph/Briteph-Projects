@@ -1,0 +1,5 @@
+string formatDate(date myDate, string format)
+{
+dateStr = myDate.toString(format);
+return dateStr;
+}
