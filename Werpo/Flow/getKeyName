@@ -1,0 +1,11 @@
+map getKeyName(int sum, list keyList, map formData)
+{
+count = sum;
+keyName = keyList.get(count);
+val = formData.get(keyName);
+serviceData = Collection(keyName:val);
+// if(keyName === ID ){
+// 	return;
+// }
+return serviceData;
+}
