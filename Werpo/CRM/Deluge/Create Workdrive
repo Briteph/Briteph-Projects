@@ -1,0 +1,7 @@
+voidCreate_Workdrive1(String DID) {
+Leads_Data = zoho.crm.getRecordById("Leads",DID);
+Lead_Name = Leads_Data.get("Lead_Name");
+Create_Folder = zoho.workdrive.createFolder(Lead_Name,"6xhgb7b59099f53ee4aad9d9b2eeb6b2473c8","workdriveconnection2");
+info Create_Folder;
+info Lead_Name;
+}
