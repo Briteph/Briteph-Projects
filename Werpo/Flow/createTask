@@ -1,0 +1,29 @@
+void createTask(string list_ID, string task_name, string task_description, string deal_id, string task_code)
+{
+header_data = Map();
+header_data.put("Content-Type","application/json");
+custom_fields = list();
+custom_fields.add({"id":"6a916270-a439-4b44-a0b9-d5e4133e82ce","value":deal_id});
+custom_fields.add({"id":"066269eb-52ec-4ddd-87d4-b060629acfc9","value":task_code});
+param = Map();
+param.put("name",task_name);
+param.put("text_content",task_description);
+//param.put("status","To Do");
+param.put("custom_fields",custom_fields);
+response = invokeurl
+[
+	url :"https://api.clickup.com/api/v2/list/" + list_ID + "/task"
+	type :POST
+	parameters:toString(param)
+	headers:header_data
+	connection:"all_clickup_triggers_and_actions"
+];
+// response = invokeurl
+// [
+// 	url :"https://api.clickup.com/api/v2/task/2jdwc7y/?custom_task_ids=&team_id=&include_subtasks="
+// 	type :GET
+// 	headers:header_data
+// 	connection:"all_clickup_triggers_and_actions"
+// ];
+info response;
+}
