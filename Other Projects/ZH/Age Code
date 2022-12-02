@@ -1,0 +1,88 @@
+void (id) {
+  allMembers = zoho.crm.getRecords("Contacts");
+  allHousehold = zoho.crm.getRecords("Accounts");
+  for each  member in allMembers
+  {
+    // init
+    id = member.get("id");
+    oldAge = member.get("Age");
+    dob = member.get("Date_of_Birth");
+    ageMap = Map();
+    // age calc
+    ageUnix = zoho.currentdate.toString().unixEpoch() - dob.toString().unixEpoch();
+    ageDecimal = ageUnix / 31536000000;
+    newAge = ageDecimal.floor();
+    // this member was 25 and just turned 26 today
+    if(oldAge == 25 && newAge == 26)
+    {
+      // age out 26
+      ageMap.put("Termination_Reason","Age Out - 26");
+      ageMap.put("Aged_Up",true);
+    }
+    ageMap.put("Age",newAge);
+    zoho.crm.updateRecord("Contacts",id,ageMap);
+  }
+  for each  household in allHousehold
+  {
+    householdID = household.get("id");
+    householdMembers = zoho.crm.getRelatedRecords("Contacts","Accounts",householdID);
+    if(householdMembers.size() > 1)
+    {
+      ageOutMembershipID = 0;
+      for each  member in householdMembers
+      {
+        memberID = member.get("id");
+        memberAge = member.get("Age");
+        memberStatus = member.get("Member_Status");
+        if(memberAge >= 65 && memberStatus == "Active")
+        {
+          ageOutMembershipID = member.get("Membership").get("id");
+          ageOutMap = Map();
+          ageOutMap.put("Termination_Reason","Age Out - 65");
+          ageOutMap.put("Aged_Out",true);
+          ageOutMap.put("Head_of_House",false);
+          ageOutMap.put("Member_Status","Inactive");
+          zoho.crm.updateRecord("Contacts",memberID,ageOutMap);
+        }
+      }
+      newHeadID = 0;
+      newHeadAge = 0;
+      for each  member in householdMembers
+      {
+        memberAge = member.get("Age");
+        memberID = member.get("id");
+        memberStatus = member.get("Member_Status");
+        if(memberAge < 65 && memberAge > newHeadAge)
+        {
+          newHeadID = memberID;
+          newHeadAge = memberAge;
+        }
+      }
+      householdPrimary = Map();
+      householdPrimary.put("Primary_Member_Name",newHeadID);
+      enrollmentPrimary = Map();
+      enrollmentPrimary.put("Oldest_Members_Age",newHeadAge);
+      enrollmentPrimary.put("Member",newHeadID);
+      newHeadMap = Map();
+      newHeadMap.put("Head_of_House",true);
+      newHeadMap.put("Membership",ageOutMembershipID);
+      zoho.crm.updateRecord("Memberships",ageOutMembershipID,enrollmentPrimary);
+      zoho.crm.updateRecord("Accounts",householdID,householdPrimary);
+      zoho.crm.updateRecord("Contacts",newHeadID,newHeadMap);
+    }
+    else
+    {
+      memberID = householdMembers.get("id");
+      memberAge = householdMembers.get("Age");
+      memberStatus = householdMembers.get("Member_Status");
+      if(memberAge >= 65 && memberStatus == "Active")
+      {
+        ageOutMap = Map();
+        ageOutMap.put("Termination_Reason","Age Out - 65");
+        ageOutMap.put("Aged_Out",true);
+        ageOutMap.put("Member_Status","Inactive");
+        zoho.crm.updateRecord("Contacts",id,ageOutMap);
+      }
+    }
+  }
+}
