@@ -1,0 +1,6 @@
+int forLoop(int i)
+{
+sum = i + 1;
+info sum;
+return sum;
+}
