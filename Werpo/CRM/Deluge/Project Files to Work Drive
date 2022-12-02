@@ -1,0 +1,65 @@
+StringPushDocsToWorkDrive(String leadId) {
+IdsList = leadId.toList("|||");
+for each  IdStr in IdsList
+{
+	leadDetails = zoho.crm.getRecordById("Leads",IdStr.toLong());
+	//info leadDetails;
+	leadname = ifnull(leadDetails.get("Company"),"");
+	parent_id = "gtyu74eec7cfb45134f8781cc8dba731e6ca4";
+	responseCreate = zoho.workdrive.createFolder(leadname,parent_id,"workdriveconnection");
+	//info responseCreate;
+	new_parent_id = responseCreate.get("data").get("id");
+	resource_id = new_parent_id;
+	relatedrecords = zoho.crm.getRelatedRecords("Attachments","Leads",IdStr.toLong());
+	//info relatedrecords;
+	for each  ele in relatedrecords
+	{
+		attachmentId = ele.get("id");
+		filename = ele.get("File_Name");
+		info filename;
+		name = encodeurl(filename).toString();
+		file = invokeurl
+		[
+			url :"https://www.zohoapis.com/crm/v2/Leads/" + IdStr.toLong() + "/Attachments/" + attachmentId
+			type :GET
+			connection:"crmconnection"
+		];
+		response = invokeurl
+		[
+			url :"https://workdrive.zoho.com/api/v1/upload?filename=" + encodeurl(filename) + "&parent_id=" + new_parent_id + "&override-name-exist=false"
+			type :POST
+			files:file
+			connection:"workdriveconnection"
+		];
+		//info "response::" + response;
+	}
+	Lighting_Install_Agreement = leadDetails.getJson("Lighting_Install_Agreement");
+	MTP = leadDetails.getJson("MTP");
+	ST_124 = leadDetails.getJson("ST_124");
+	Tool = leadDetails.getJson("Tool");
+	if(Lighting_Install_Agreement.size() > 0)
+	{
+		for each  l in Lighting_Install_Agreement
+		{
+			a_id = l.getJson("attachment_Id");
+			filename = l.getJson("file_Name");
+			name = encodeurl(filename).tostring();
+			f = invokeurl
+			[
+				url :"https://www.zohoapis.com/crm/v2/Leads/" + IdStr.toLong() + "/Attachments/" + a_id
+				type :GET
+				connection:"crmconnection"
+			];
+			res = invokeurl
+			[
+				url :"https://workdrive.zoho.com/api/v1/upload?filename=" + encodeurl(filename) + "&parent_id=" + new_parent_id + "&override-name-exist=false"
+				type :POST
+				files:f
+				connection:"workdriveconnection"
+			];
+			info "response::" + res;
+		}
+	}
+}
+return "sucess";
+}
