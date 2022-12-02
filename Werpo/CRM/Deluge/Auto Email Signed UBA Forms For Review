@@ -1,0 +1,78 @@
+voidAuto_Email_Signed_UBA_Forms_For_Review(Int leadId) {
+leadDetails = zoho.crm.getRecordById("Leads",leadId.toLong());
+//info "leadDetails : " + leadDetails;
+leadname = ifnull(leadDetails.get("Full_Name"),"");
+street = ifnull(leadDetails.get("Street"),"");
+city = ifnull(leadDetails.get("City"),"");
+state = ifnull(leadDetails.get("State"),"");
+zipcode = ifnull(leadDetails.get("Zip_Code"),"");
+company = ifnull(leadDetails.get("Company"),"");
+Address = ifnull(leadDetails.get("Address"),"");
+company = ifnull(leadDetails.get("Company"),"");
+Electricity = "Electricity Bill_ " + street + " " + city;
+Waste = "Waste Bill_ " + street + " " + city;
+Gas = "Gas Bill_ " + street + " " + city;
+Water = "Water Bill_ " + street + " " + city;
+Cable = "Cable Bill_ " + street + " " + city;
+Propane = "Propane Bill_ " + street + " " + city;
+Telephone = "Telephone Bill_ " + street + " " + city;
+Cellular = "Cellular Bill_ " + street + " " + city;
+UBA = "UBA FORMS_" + street + " " + city;
+parent_id = "2g9srbfc7d0d752964c14946a8e3305904b13";
+responseCreate = zoho.workdrive.createFolder(leadname,parent_id,"workdriveconnection");
+//info "responseCreate : " + responseCreate;
+new_parent_id = responseCreate.get("data").get("id");
+resource_id = new_parent_id;
+//filenamelist = {Electricity,Waste,Gas,Cable,Propane,Telephone,Cellular,Water};
+filenamelist = {"Electricity Bill_","Waste Bill_","Gas Bill_","Cable Bill_","Propane Bill_","Telephone Bill_","Cellular Bill_","Water Bill_"};
+info "filenamelist : " + filenamelist;
+relatedrecords = zoho.crm.getRelatedRecords("Attachments","Leads",leadId.toLong());
+for each  ele in relatedrecords
+{
+	attachmentId = ele.get("id");
+	filename = ele.get("File_Name").getPrefix(".").getPrefix("_") + "_";
+	info filename;
+	if(filenamelist.contains(filename))
+	{
+		filename = ele.get("File_Name");
+		name = encodeurl(filename).toString();
+		file = invokeurl
+		[
+			url :"https://www.zohoapis.com/crm/v2/Leads/" + leadId.toLong() + "/Attachments/" + attachmentId
+			type :GET
+			connection:"crmconnection"
+		];
+		uploadresponse = invokeurl
+		[
+			url :"https://workdrive.zoho.com/api/v1/upload?filename=" + encodeurl(filename) + "&parent_id=" + new_parent_id + "&override-name-exist=false"
+			type :POST
+			files:file
+			connection:"workdriveconnection"
+		];
+		info "upl " + uploadresponse;
+	}
+	info "uploadresponse : " + uploadresponse;
+}
+paramdata = "{\"data\": {\"attributes\":{\"resource_id\":" + resource_id + ", \"link_name\": \"Folderlink\", \"request_user_data\": false, \"allow_download\": true,  \"expiration_date\": \"2021-09-26\", \"role_id\":\"6\" }, \"type\": \"links\" } }";
+mp = Map();
+mp.put("Accept","application/vnd.api+json");
+linkresponse = invokeurl
+[
+	url :"https://workdrive.zoho.com/api/v1/links"
+	type :POST
+	parameters:paramdata.toString()
+	headers:mp
+	connection:"workdriveconnection"
+];
+info "linkresponse : " + linkresponse;
+var = linkresponse.get("data").get("attributes").get("link");
+info var;
+str = "<p><span class='s1'>Hi Daniel,</span></p><p><span class='s1'>Attached is a filled out info sheet, LOA, utility bill audit agreement, and all utility bills from ABC Collision " + company + "</span></p><p class='p1'><span class='s1'>They are located at " + Address + " " + city + " " + state + " " + zipcode + "</span></p><p class='p1'><span class='s1'>Please let me know what we can do for them regarding utility bill auditing.</span></p><p class='p2'>&nbsp;</p><p class='p1'><span class='s1'>Thank you,</span></p><p class='p1'><span class='s1'>Mike Roy </span></p><p>Folder link =&nbsp;" + var + "</p>";
+sendmail
+[
+	from :zoho.adminuserid
+	to :"DDkhodosh@gmail.com"
+	subject :"Utility Bill Auditing Inquiry For " + company
+	message :str
+]
+}
