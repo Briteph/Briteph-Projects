@@ -1,0 +1,38 @@
+void postMaterialProcurementClickupSubtask(collection services, string clickupID, map formData)
+{
+for each  x in services
+{
+	// initial constant values
+	param = Map();
+	customFields = list();
+	param.put("parent",clickupID);
+	service = x.get("service");
+	data = x.get("data");
+	initData = data;
+	vendors = initData.get("vendors");
+	material = initData.get("material");
+	// 	param.put("material",material);
+	materialField = Map();
+	materialField.put("id","8af14e0b-1f90-4708-b88f-43493ad7534e");
+	materialField.put("value",material);
+	customFields.add(materialField);
+	param.put("custom_fields",customFields);
+	// 	info initData;
+	for each  vendor in vendors
+	{
+		info "vendor ===== " + vendor;
+		// 		param.put("vendor",vendor);
+		param.put("name",service + " - " + material + " - " + vendor);
+		param.put("status","UPLOAD WO'S");
+		info "PARAM ============= " + param;
+		response = invokeurl
+		[
+			url :"https://api.clickup.com/api/v2/list/116223816/task"
+			type :POST
+			parameters:param
+			connection:"all_clickup_triggers_and_actions"
+		];
+		info response;
+	}
+}
+}
