@@ -1,0 +1,27 @@
+void updateProjects(string deal_id, string transition_id)
+{
+dataMap = Map();
+dataMap.put("Notes","Revisions Requested on " + zoho.currenttime);
+blueprint1 = Map();
+blueprint1.put("transition_id",transition_id);
+blueprint1.put("data",dataMap);
+blueprintList = list();
+blueprintList.add(blueprint1);
+param = Map();
+param.put("blueprint",blueprintList);
+response = invokeurl
+[
+	url :"https://www.zohoapis.com/crm/v2.1/Projects_Won/" + deal_id + "/actions/blueprint"
+	type :PUT
+	parameters:toString(param)
+	connection:"zoho_crm_production"
+];
+info response;
+// response = invokeurl
+// [
+// 	url :"https://www.zohoapis.com/crm/v2.1/Projects_Won/5027572000001151454/actions/blueprint"
+// 	type :GET
+// 	connection:"sandbox"
+// ];
+// info response;
+}
