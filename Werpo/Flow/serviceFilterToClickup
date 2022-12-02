@@ -1,0 +1,25 @@
+map serviceFilterToClickupAPI(map formData)
+{
+sum = 0;
+for each  data in formData
+{
+	keyList = formData.keys();
+	if(data.length() > 0)
+	{
+		keyName = keyList.get(sum);
+		info "yes " + keyName + " = " + data;
+		// 		response = invokeUrl [
+		// 			url : /api/v2/list/:list_id/task
+		// 			type : POST
+		// 			parameters : <paramMap/string>
+		// 			connection : "all_clickup_triggers_and_actions"
+		// 		];
+	}
+	else
+	{
+		// 		info "no " + data;
+	}
+	sum = sum + 1;
+}
+return formData;
+}
