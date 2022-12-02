@@ -1,0 +1,6 @@
+int getQuantity(list invoiceItems)
+{
+listy = invoiceItems;
+quantity = listy.getJSON("quantity");
+return quantity;
+}
