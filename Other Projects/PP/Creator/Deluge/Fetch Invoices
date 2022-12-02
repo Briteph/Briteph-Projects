@@ -1,0 +1,188 @@
+invoices = list();
+files = list();
+loopHack = "loop.".repeat(1000);
+loopHackList = loopHack.toList(".");
+page = 1;
+request = Map();
+//request.putAll({"module": "quotes"});
+return_val = Collection();
+param = Map();
+param.put("apiKey","ScoroAPI_0fb3e0606295d3d");
+param.put("lang","eng");
+param.put("company_account_id","projectpartners");
+param.put("detailed_response",true);
+param.put("request",{});
+for each  loop in loopHackList
+{
+	param.putAll({"page":page});
+	req = invokeurl
+	[
+		url :"https://projectpartners.scoro.com/api/v2/invoices/list"
+		type :POST
+		parameters:param.toString()
+	];
+	data = req.get("data");
+	invoices.addAll(data);
+	if(data.size() < 25)
+	{
+		break;
+	}
+	else
+	{
+		page = page + 1;
+	}
+}
+delete from Invoices[Invoice_No != null];
+//MAP FIELDS IN THE FORM
+for each  invoice in invoices
+{
+	res = Invoices[Invoice_No == invoice.get("no")];
+	// 	response = PDF_invoices[File_name1.contains("Invoice No. " + toString(invoice.get("no")))];
+	resC = Client[Company_ID == invoice.get("interested_party_id")];
+	lines = invoice.get("lines");
+	product_group_list = list();
+	product_group = Collection();
+	for each  line in lines
+	{
+		row1 = Invoices.Product_Group();
+		row1.Product_Name=line.get("product_name");
+		row1.Amount=line.get("sum");
+		row1.Project_Name=line.get("project_name");
+		row1.Quantity=line.get("amount");
+		row1.Unit=line.get("unit");
+		row1.Unit_Price=line.get("price");
+		row1.Proportion=line.get("amount2");
+		row1.Cost=line.get("cost");
+		row1.Comment1=line.get("comment");
+		row1.Comment2=line.get("comment2");
+		row1.Product_ID=line.get("product_id");
+		row1.Is_Internal=line.get("is_internal");
+		row1.Project_ID=line.get("project_id");
+		row1.Supplier_ID=line.get("supplier_id");
+		row1.Doer_ID=line.get("doer_id");
+		row1.ID1=line.get("id");
+		product_group.insert(row1);
+		//product_group_list.insert(row1);
+	}
+	if(res.ID == null)
+	{
+		//MAP PRODUCT VALUES IN SUBFORM
+		new_invoice = insert into Invoices
+		[
+			Added_User=zoho.loginuser
+			Invoice_No=invoice.get("no")
+			Issue_Date=invoice.get("date")
+			Payer=invoice.get("company_name")
+			Due_Date=invoice.get("deadline")
+			Payment_Method=invoice.get("payment_type")
+			Project=invoice.get("project_name")
+			Include_tax_GBP=invoice.get("receivable_sum")
+			Sum_GBP=invoice.get("sum")
+			Outstanding=toNumber(invoice.get("receivable_sum"))
+			Type_of=invoice.get("custom_fields").get(2).get("value")
+			Invoice_Frequency=invoice.get("custom_fields").get(1).get("value")
+			Client_Purchase_Number=invoice.get("custom_fields").get(0).get("value")
+			Cost_centre=invoice.get("custom_fields").get(3).get("value")
+			Account_Numeber_Customer=invoice.get("custom_fields").get(7).get("value")
+			Account_No_G_L_Account=invoice.get("custom_fields").get(8).get("value")
+			Account_No_G_L=invoice.get("custom_fields").get(9).get("value")
+			Overdue_Interest=invoice.get("fine")
+			PDF="https://projectpartners.scoro.com/invoices/print/" + invoice.get("id") + "/?plang=eng&pdf_template=11"
+			Interested_Party=resC.ID
+			Status=invoice.get("status")
+			Invoice_Type=invoice.get("custom_fields").get(4).get("value")
+			Invoice_Comments=invoice.get("custom_fields").get(5).get("value")
+			Subtotal=invoice.get("sum")
+			Total_GBP=invoice.get("receivable_sum")
+			Tax=invoice.get("vat_sum")
+			Sent=invoice.get("is_sent")
+			Receivable=invoice.get("receivable_sum")
+			Received=invoice.get("paid_sum")
+			Owner_Email=invoice.get("owner_email")
+			Currency=invoice.get("currency")
+			Account_ID_Name=invoice.get("account_id")
+			Country=invoice.get("company_address").get("country")
+			County=invoice.get("company_address").get("county")
+			Municipality=invoice.get("company_address").get("municipality")
+			City=invoice.get("company_address").get("city")
+			Street=invoice.get("company_address").get("street")
+			Zip_Code=invoice.get("company_address").get("zipcode")
+			Full_Address=invoice.get("company_address").get("full_address")
+			Product_Group=product_group
+			real_estate_id=invoice.get("real_estate_id")
+			currency_rate=invoice.get("currency_rate")
+			scheduled_invoice_id=invoice.get("scheduled_invoice_id")
+			company_id=invoice.get("company_id")
+			person_id=invoice.get("person_id")
+			company_address_id=invoice.get("company_address_id")
+			interested_party_id=invoice.get("interested_party_id")
+			interested_party_address_id=invoice.get("interested_party_address_id")
+			owner_id=invoice.get("owner_id")
+			id1=invoice.get("id")
+			vat=invoice.get("vat")
+			vat_code_id=invoice.get("vat_code_id")
+		];
+	}
+	// 	else{
+	// 		res.Issue_Date=invoice.get("date");
+	// 		res.Payer=invoice.get("company_name");
+	// 		res.Due_Date=invoice.get("deadline");
+	// 		res.Payment_Method=invoice.get("payment_type");
+	// 		res.Project=invoice.get("project_name") + "Test";
+	// 		res.Include_tax_GBP=invoice.get("receivable_sum");
+	// 		res.Sum_GBP=invoice.get("sum");
+	// 		res.Outstanding=toNumber(invoice.get("receivable_sum"));
+	// 		res.Type_of=invoice.get("custom_fields").get(2).get("value");
+	// 		res.Invoice_Frequency=invoice.get("custom_fields").get(1).get("value");
+	// 		res.Client_Purchase_Number=invoice.get("custom_fields").get(0).get("value");
+	// 		res.Cost_centre=invoice.get("custom_fields").get(3).get("value");
+	// 		res.Account_Numeber_Customer=invoice.get("custom_fields").get(7).get("value");
+	// 		res.Account_No_G_L_Account=invoice.get("custom_fields").get(8).get("value");
+	// 		res.Account_No_G_L=invoice.get("custom_fields").get(9).get("value");
+	// 		res.Overdue_Interest=invoice.get("fine");
+	// 		res.PDF="https://projectpartners.scoro.com/invoices/print/" + invoice.get("id") + "/?plang=eng&pdf_template=11";
+	// 		res.Interested_Party=resC.ID;
+	// 		res.Status=invoice.get("status");
+	// 		res.Invoice_Type=invoice.get("custom_fields").get(4).get("value");
+	// 		res.Invoice_Comments=invoice.get("custom_fields").get(5).get("value");
+	// 		res.Subtotal=invoice.get("sum");
+	// 		res.Total_GBP=invoice.get("receivable_sum");
+	// 		res.Tax=invoice.get("vat_sum");
+	// 		res.Sent=invoice.get("is_sent");
+	// 		res.Receivable=invoice.get("receivable_sum");
+	// 		res.Received=invoice.get("paid_sum");
+	// 		res.Owner_Email=invoice.get("owner_email");
+	// 		res.Currency=invoice.get("currency");
+	// 		res.Account_ID_Name=invoice.get("account_id");
+	// 		res.Country=invoice.get("company_address").get("country");
+	// 		res.County=invoice.get("company_address").get("county");
+	// 		res.Municipality=invoice.get("company_address").get("municipality");
+	// 		res.City=invoice.get("company_address").get("city");
+	// 		res.Street=invoice.get("company_address").get("street");
+	// 		res.Zip_Code=invoice.get("company_address").get("zipcode");
+	// 		res.Full_Address=invoice.get("company_address").get("full_address");
+	// 		//UPDATE PRODUCT GROUP SUBFORM
+	// 		//res.Product_Group = product_group_list;
+	// 		// 		i = 0;
+	// 		// 		for each  row_ in res.Product_Group
+	// 		// 		{
+	// 		// 			row_.Product_Name=lines.get(i).get("product_name");
+	// 		// 			row_.Amount=lines.get(i).get("sum");
+	// 		// 			row_.Project_Name=lines.get(i).get("project_name");
+	// 		// 			row_.Quantity=lines.get(i).get("amount");
+	// 		// 			row_.Unit=lines.get(i).get("unit");
+	// 		// 			row_.Unit_Price=lines.get(i).get("price");
+	// 		// 			row_.Proportion=toNumber(lines.get(i).get("amount2"));
+	// 		// 			row_.Cost=lines.get(i).get("cost");
+	// 		// 			row_.Comment1=lines.get(i).get("comment");
+	// 		// 			row_.Comment2=lines.get(i).get("comment2");
+	// 		// 			row_.Product_ID=lines.get(i).get("product_id");
+	// 		// 			row_.Is_Internal=lines.get(i).get("is_internal");
+	// 		// 			row_.Project_ID=lines.get(i).get("project_id");
+	// 		// 			row_.Supplier_ID=lines.get(i).get("supplier_id");
+	// 		// 			row_.Doer_ID=lines.get(i).get("doer_id");
+	// 		// 			row_.ID1=lines.get(i).get("id");
+	// 		// 			i = i + 1;
+	// 		// 		}
+	// 	}
+}
