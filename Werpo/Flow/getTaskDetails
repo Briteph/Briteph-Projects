@@ -1,0 +1,18 @@
+map getTaskDetails(list custom_fields, map taskData)
+{
+before_status = taskData.get("history_before_status");
+task_code = "";
+deal_id = "";
+for each  data in custom_fields
+{
+	if(data.get("name") == "Task Code")
+	{
+		task_code = data.get("value");
+	}
+	if(data.get("name") == "Deal ID")
+	{
+		deal_id = "" + data.get("value");
+	}
+}
+return {"deal_id":deal_id,"task_code":task_code,"status_before":before_status};
+}
