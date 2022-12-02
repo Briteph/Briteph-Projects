@@ -1,0 +1,47 @@
+void Lead_Scoring(Int leadId,String phone,String email,String title,String website,String industry {
+phone = ifnull(phone,"0");
+email = ifnull(email,"0");
+title = ifnull(title,"");
+website = ifnull(website,"0");
+industry = ifnull(industry,"0");
+point = 0;
+if(phone.length() >= 9)
+{
+	point = 2;
+}
+if(!(email.contains("gmail") || email.contains("yahoo") || email.contains("outlook")))
+{
+	point = point + 2;
+}
+if(input.website != null || input.website != "")
+{
+	point = point + 2;
+}
+if(title.contains("CEO") || title.contains("manager") || title.contains("dir") || title.contains("VP"))
+{
+	point = point + 2;
+}
+if(industry.contains("ERP"))
+{
+	point = point + 2;
+}
+if(point >= 9)
+{
+	score = "*****";
+}
+else if(point >= 7)
+{
+	score = "****";
+}
+else if(point >= 5)
+{
+	score = "***";
+}
+else
+{
+	score = "";
+}
+updatedResponse = zoho.crm.updateRecord("Leads",leadId,{"fieldapiname":score});
+info updatedResponse;
+//Replace 'fieldapiname' with your field api name to update the score.
+}
