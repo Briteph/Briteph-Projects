@@ -1,0 +1,22 @@
+voidSmsHistorytoDeals(String lead_id,Int deal_id) {
+//lead_id = contact.get("smsmagic4__LeadIdCPY");
+//deal_id = contact.get('Deals.ID');
+info "Lead Id: " + lead_id;
+info "Deal Id: " + deal_id;
+if(isNumber(lead_id) && isNumber(deal_id))
+{
+	fieldMap = Map();
+	fieldMap.put("module","smsmagic4__SMS_History");
+	fieldMap.put("criteria","smsmagic4__Lead:equals:" + lead_id);
+	response = zoho.crm.invokeConnector("crm.search",fieldMap);
+	sms_records = response.get("response").get("data");
+	for each  sms_record in sms_records
+	{
+		module_name = "smsmagic4__SMS_History";
+		sms_history_info = {"Deal":deal_id.toLong()};
+		record_id = sms_record.get("id").toLong();
+		update_response = zoho.crm.updateRecord(module_name,record_id,sms_history_info);
+		info update_response;
+	}
+}
+}
