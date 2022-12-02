@@ -1,0 +1,6 @@
+string getBuildingRetrofitID(string id)
+{
+dealInfo = zoho.crm.getRecordById("Deals",id,"zoho_crm_production");
+buildingRetrofit = dealInfo.get("Workdrive_Retrofit_ID");
+return buildingRetrofit;
+}
