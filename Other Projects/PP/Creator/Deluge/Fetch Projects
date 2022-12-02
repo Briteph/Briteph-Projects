@@ -1,0 +1,94 @@
+projects = list();
+loopHack = "loop.".repeat(1000);
+loopHackList = loopHack.toList(".");
+page = 1;
+request = Map();
+//request.putAll({"module": "quotes"});
+return_val = Collection();
+param = Map();
+param.put("apiKey","ScoroAPI_0fb3e0606295d3d");
+param.put("lang","eng");
+param.put("company_account_id","projectpartners");
+param.put("detailed_response",true);
+param.put("request",{});
+for each  loop in loopHackList
+{
+	param.putAll({"page":page});
+	req = invokeurl
+	[
+		url :"https://projectpartners.scoro.com/api/v2/projects/list"
+		type :POST
+		parameters:param.toString()
+	];
+	data = req.get("data");
+	projects.addAll(data);
+	if(data.size() < 25)
+	{
+		break;
+	}
+	else
+	{
+		page = page + 1;
+	}
+}
+delete from Projects[Project_ID != null];
+for each  project in projects
+{
+	res = Projects[Project_ID == project.get("project_id")];
+	resC = Client[Company_ID == project.get("company_id")];
+	fields = project.get("custom_fields");
+	custom_fields = Collection();
+	for each  field in fields
+	{
+		row1 = Projects.Custom_Fields();
+		row1.id1=field.get("id");
+		row1.Type_field=field.get("type");
+		row1.Name=field.get("name");
+		row1.Value=field.get("value");
+		custom_fields.insert(row1);
+	}
+	users = project.get("project_users");
+	project_users = Collection();
+	for each  user in users
+	{
+		row2 = Projects.Project_Users();
+		row2.id1=user.get("id");
+		row2.Email=user.get("email");
+		project_users.insert(row2);
+	}
+	if(res.ID == null)
+	{
+		new_project = insert into Projects
+		[
+			Added_User=zoho.loginuser
+			Project_ID=project.get("project_id")
+			is_private=project.get("is_private")
+			Status_Name=project.get("status_name")
+			Description=project.get("description")
+			Project_Name=project.get("project_name")
+			stripDescription=project.get("stripDescription")
+			Phases=project.get("phases")
+			is_deleted=project.get("is_deleted")
+			manager_id=project.get("manager_id")
+			Deleted_Date=project.get("deleted_date")
+			Permissions=project.get("permissions")
+			Manager_Email=project.get("manager_email")
+			Tags=project.get("tags")
+			Status=project.get("status")
+			No=project.get("no")
+			Account_ID=project.get("account_id")
+			project_customer_portal_users=project.get("project_customer_portal_users")
+			Color=project.get("color")
+			Project_Accounts=project.get("project_accounts")
+			is_personal=project.get("is_personal")
+			Budget_Type=project.get("budget_type")
+			Date_field=project.get("date")
+			Deadline=project.get("deadline")
+			Duration=project.get("duration")
+			Company_ID=resC.ID
+			Company_Name=project.get("company_name")
+			Custom_Fields=custom_fields
+			Project_Users=project_users
+		];
+	}
+}
