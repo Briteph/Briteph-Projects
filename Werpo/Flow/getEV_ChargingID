@@ -1,0 +1,9 @@
+string getEV_Charging_ID(int id)
+{
+info id;
+deal_data = Map();
+deal_data = zoho.crm.getRecordById("Deals",id,"zoho_crm_production");
+EV_Charging = deal_data.get("Workdrive_EV_Charging_ID");
+info EV_Charging;
+return EV_Charging;
+}
