@@ -1,0 +1,62 @@
+voidAll_projects_to_clickup(String email,Int id) {
+c = zoho.crm.searchRecords("Leads","(Email:equals:" + email + ")");
+info c.size();
+Portfolio_App_Required = 0;
+Create_Portfolio_App = 0;
+Company_name = "";
+link_id = "";
+for each  i in c
+{
+	if(i.getJson("Portfolio_App_Required") == true)
+	{
+		Portfolio_App_Required = Portfolio_App_Required + 1;
+		Company_name = Company_name + i.getJson("Company") + ",";
+	}
+	if(i.getJson("Create_Portfolio_App") == true)
+	{
+		Create_Portfolio_App = Create_Portfolio_App + 1;
+		Company_name = Company_name + i.getJson("Company") + ",";
+		link_id = i.getJson("id");
+	}
+}
+info Company_name.removeLastOccurence(",");
+if(Create_Portfolio_App > 0 && Portfolio_App_Required > 0)
+{
+	Company_name = Company_name.toList().distinct().tostring();
+	info "s";
+	//webhook trigger
+	validate = invokeurl
+	[
+		url :"https://flow.zoho.com/726505648/flow/webhook/incoming?zapikey=1001.9b5eb0385834632ab13507a7b44a15c2.b14b581ef383ddec25fb3226c9e7bd57&isdebug=false"
+		type :POST
+		parameters:{"trigger":"Yes","id":id,"company":Company_name,"link":"https://crm.zoho.com/crm/org710069157/tab/Leads/" + link_id + ""}
+	];
+}
+/*c = zoho.crm.searchRecords("Leads","(Email:equals:" + email + ")");
+info c.size();
+Portfolio_App_Required = 0;
+Create_Portfolio_App = 0;
+for each  i in c
+{
+	if(i.getJson("Portfolio_App_Required") == true)
+	{
+		Portfolio_App_Required = Portfolio_App_Required + 1;
+	}
+	if(i.getJson("Create_Portfolio_App") == true)
+	{
+		Create_Portfolio_App = Create_Portfolio_App + 1;
+	}
+}
+if(Create_Portfolio_App > 0 && Portfolio_App_Required > 0)
+{
+	info "s";
+	//webhook trigger
+	validate = invokeurl
+	[
+		url :"https://flow.zoho.com/726505648/flow/webhook/incoming?zapikey=1001.9b5eb0385834632ab13507a7b44a15c2.b14b581ef383ddec25fb3226c9e7bd57&isdebug=false"
+		type :POST
+		parameters:{"trigger":"Yes","id":id}
+	];
+}
+//Jeanna@shndamgmtcorp.com*/
+}
