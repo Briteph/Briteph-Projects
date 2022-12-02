@@ -1,0 +1,6 @@
+string ed_date()
+{
+c = zoho.currenttime.addHour(48);
+a1 = c.tostring().unixEpoch("America/New_York");
+return a1;
+}
