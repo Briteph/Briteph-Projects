@@ -1,0 +1,25 @@
+void setTrueProposalInRFPClickup(string taskID)
+{
+header_data = Map();
+header_data.put("Content-Type","application/json");
+param = Map();
+param.put("comment_text","Proposal have been uploaded to the workdrive");
+info " task " + taskID + " field " + param;
+response = invokeurl
+[
+	url :"https://api.clickup.com/api/v2/task/" + taskID + "/comment?"
+	type :POST
+	parameters:param
+	connection:"all_clickup_triggers_and_actions"
+];
+param2 = Map();
+param2.put("status","proposal uploaded");
+res = invokeurl
+[
+	url :"https://api.clickup.com/api/v2/task/" + taskID
+	type :PUT
+	parameters:param2
+	connection:"all_clickup_triggers_and_actions"
+];
+info res;
+}
