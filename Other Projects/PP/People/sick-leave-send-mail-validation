@@ -1,0 +1,19 @@
+leaves = zoho.people.getRecords("P_ApplyLeave");
+for each  leave in leaves
+{
+	if(leave.get("Leavetype") == "Sick Leave")
+	{
+		startDate = leave.get("From");
+		dayDecimal = daysBetween(startDate,today);
+		if(dayDecimal == 8)
+		{
+			sendmail
+			[
+				from :zoho.adminuserid
+				to :"kazueyah@gmail.com"
+				subject :"Sick Leave"
+				message :"Sick leave"
+			]
+		}
+	}
+}
