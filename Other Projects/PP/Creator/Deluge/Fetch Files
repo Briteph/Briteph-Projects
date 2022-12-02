@@ -1,0 +1,54 @@
+files = list();
+loopHack = "loop.".repeat(1000);
+loopHackList = loopHack.toList(".");
+page = 1;
+request = Map();
+//request.putAll({"module": "quotes"});
+return_val = Collection();
+param = Map();
+param.put("apiKey","ScoroAPI_0fb3e0606295d3d");
+param.put("lang","eng");
+param.put("company_account_id","projectpartners");
+param.put("detailed_response",true);
+param.put("request",{});
+for each  loop in loopHackList
+{
+	param.putAll({"page":page});
+	req = invokeurl
+	[
+		url :"https://projectpartners.scoro.com/api/v2/files/"
+		type :POST
+		parameters:param.toString()
+	];
+	data = req.get("data");
+	files.addAll(data);
+	if(data.size() < 25)
+	{
+		break;
+	}
+	else
+	{
+		page = page + 1;
+	}
+}
+for each  file in files
+{
+	res = PDF_invoices[File_ID == file.get("file_id")];
+	if(res.ID == Null)
+	{
+		new_file = insert into PDF_invoices
+		[
+			Added_User=zoho.loginuser
+			File_ID=file.get("file_id")
+			Hash=file.get("hash")
+			File_name1=file.get("file_name")
+			File_location=file.get("file_location")
+		];
+	}
+	else
+	{
+		res.Hash=file.get("hash");
+		res.File_name1=file.get("file_name");
+		res.File_location=file.get("file_location");
+	}
+}
