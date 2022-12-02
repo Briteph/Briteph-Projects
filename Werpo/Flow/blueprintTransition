@@ -1,0 +1,42 @@
+void blueprintTransition(map clickupData, string listID_CU, string listName_CU, string id, list list_API)
+{
+// CU at the end of a variable means the data is from Clickup
+// API is for the data for the api 
+//get the record ID 
+// for each  field in customFields
+// {
+// 	name = field.get("name");
+// 	if(name == "Deal ID")
+// 	{
+// 		id = field.get("value");
+// 	}
+// }
+for each  listData in list_API
+{
+	//get the list ID in clickup to match check 
+	listID_API = listData.get("listID");
+	if(listID_CU == listID_API)
+	{
+		param = Map();
+		blueprint = List();
+		blueprintPerList = Map();
+		transitionID = listData.get("transitionID");
+		moduleName = listData.get("moduleAPIName");
+		data = listData.get("conditions");
+		info "trans " + transitionID + " data " + data + " moduleName " + moduleName + " id " + id;
+		blueprintPerList.put("transition_id",transitionID);
+		blueprintPerList.put("data",data);
+		blueprint.add(blueprintPerList);
+		param.put("blueprint",blueprint);
+		info param;
+		response = invokeurl
+		[
+			url :"https://www.zohoapis.com/crm/v2/" + moduleName + "/" + id + "/actions/blueprint"
+			type :PUT
+			parameters:param.toString()
+			connection:"zoho_crm_production"
+		];
+		info response;
+	}
+}
+}
