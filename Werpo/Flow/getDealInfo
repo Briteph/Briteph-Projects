@@ -1,0 +1,6 @@
+string getDealInfo(string id)
+{
+dealInfo = zoho.crm.getRecordById("Deals",id,"zoho_crm_production");
+dealURL = dealInfo.get("Workdrive_Deal_ID");
+return dealURL;
+}
