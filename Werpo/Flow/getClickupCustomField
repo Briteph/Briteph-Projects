@@ -1,0 +1,35 @@
+string getClickUpCustomField(string taskAttachments, string taskName, string customField, string status_status, string text_content, string description, int time_spent, string history_comment_comment, string history_comment_text_content, string history_items)
+{
+header_data = Map();
+header_data.put("Content-Type","application/json");
+for each  field in customField
+{
+	name = field.get("name");
+	if(name == "Task Code")
+	{
+		taskCode = field.get("value");
+	}
+}
+info "status_status " + status_status;
+info "text_content " + text_content;
+info "description " + description;
+info "time_spent " + time_spent;
+info "name " + taskName;
+info "attachments" + taskAttachments;
+info "comments";
+list_data = {"status_status":status_status,"text_content":text_content,"description":description,"time_spent":time_spent,"name":taskName,"attachments":taskAttachments};
+info "history_comment_comment " + history_comment_comment;
+info "history_comment_text_content " + history_comment_text_content;
+info "history_items " + history_items;
+update_response = invokeurl
+[
+	url :"https://api.clickup.com/api/v2/task/" + taskCode
+	type :PUT
+	parameters:toString(list_data)
+	headers:header_data
+	connection:"all_clickup_triggers_and_actions"
+];
+info "update_response " + update_response;
+return taskCode;
+//history_comment_comment history_comment_text_content history_items
+}
