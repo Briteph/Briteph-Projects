@@ -1,0 +1,22 @@
+map createEVCharging(int Deals_id, string workdriveDeal_id)
+{
+deal = zoho.crm.getRecordById("Deals",Deals_id,"zoho_crm_production");
+EV_ChargingWorkdrive_ID = deal.get("Workdrive_EV_Charging_ID");
+subFolders = {"Utility Application","Payments","Contracts"};
+otherMap = Map();
+if(EV_ChargingWorkdrive_ID == Null)
+{
+	createEVCharging = zoho.workdrive.createFolder("EV Charging",workdriveDeal_id,"werpo_workdrive_connection");
+	createEVCharging_ID = createEVCharging.get("data").get("id");
+	// 	info createEVCharging;
+	deal.put("Workdrive_EV_Charging_ID",createEVCharging_ID);
+	dealUpdate = zoho.crm.updateRecord("Deals",Deals_id,deal,otherMap,"zoho_crm_production");
+	info "DEAL UPDATE" + dealUpdate;
+	for each  folder in subFolders
+	{
+		createsubFolders = zoho.workdrive.createFolder(folder,createEVCharging_ID,"werpo_workdrive_connection");
+		info createsubFolders;
+	}
+}
+return createsubFolders;
+}
