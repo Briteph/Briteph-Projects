@@ -1,0 +1,13 @@
+void updateStatusToRequestVisit(string taskID)
+{
+param2 = Map();
+param2.put("status","request for on-site visit");
+res = invokeurl
+[
+	url :"https://api.clickup.com/api/v2/task/" + taskID
+	type :PUT
+	parameters:param2
+	connection:"all_clickup_triggers_and_actions"
+];
+info res;
+}
