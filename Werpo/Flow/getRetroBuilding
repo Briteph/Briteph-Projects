@@ -1,0 +1,9 @@
+string getRetroFitBuilding(int id)
+{
+info id;
+deal_data = Map();
+deal_data = zoho.crm.getRecordById("Deals",id,"zoho_crm_production");
+RetrofitBuilding = deal_data.get("Multi_Select_1");
+info RetrofitBuilding;
+return RetrofitBuilding;
+}
