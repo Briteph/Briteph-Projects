@@ -1,0 +1,37 @@
+void updateDeal(string deal_id, string transition_id)
+{
+dataMap = Map();
+// dataMap.put("Notes","Revisions Requested on " + zoho.currenttime);
+// dataMap.put("Con_Edison_Bill",true);
+blueprint1 = Map();
+blueprint1.put("transition_id",transition_id);
+blueprint1.put("data",dataMap);
+blueprintList = list();
+blueprintList.add(blueprint1);
+param = Map();
+param.put("blueprint",blueprint1);
+data = param.toString();
+info data;
+rresponse = invokeurl
+[
+	url :"https://www.zohoapis.com/crm/v2.1/Deals/" + deal_id + "/actions/blueprint"
+	type :GET
+	connection:"zoho_crm_production"
+];
+info rresponse;
+// response = invokeurl
+// [
+// 	url :"https://www.zohoapis.com/crm/v2.1/Deals/" + deal_id + "/actions/blueprint"
+// 	type :PUT
+// 	parameters:toString(param)
+// 	connection:"zoho_crm_production"
+// ];
+// info response;
+// response = invokeurl
+// [
+// 	url :"https://www.zohoapis.com/crm/v2.1/Deals/5027572000001123869/actions/blueprint"
+// 	type :GET
+// 	connection:"sandbox"
+// ];
+// info response;
+}
