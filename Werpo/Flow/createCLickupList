@@ -1,0 +1,42 @@
+void createClickupList(string list_id, string folder_id)
+{
+header_data = Map();
+header_data.put("Content-Type","application/json");
+list_template_data = invokeurl
+[
+	url :"https://api.clickup.com/api/v2/list/" + list_id
+	type :GET
+	headers:header_data
+	connection:"all_clickup_triggers_and_actions"
+];
+statuses = list_template_data.get("statuses");
+//info list_template_data;
+new_statuses = list();
+for each  status in statuses
+{
+	status.remove("id");
+	new_statuses.add(status);
+}
+list_data = {"name":list_template_data.get("name"),"orderindex":1,"override_statuses":true,"statuses":statuses};
+//list_data.put("statuses",statuses);
+info list_data;
+//statuses = {{"status":"Test","orderindex":0,"color":"#d3d3d3","type":"open"},{"status":"Test2","orderindex":0,"color":"#d3d3d3","type":"closed"}};
+response = invokeurl
+[
+	url :"https://api.clickup.com/api/v2/folder/" + folder_id + "/list"
+	type :POST
+	parameters:toString(list_data)
+	headers:header_data
+	connection:"all_clickup_triggers_and_actions"
+];
+new_list_id = response.get("id");
+update_response = invokeurl
+[
+	url :"https://api.clickup.com/api/v2/list/" + new_list_id
+	type :PUT
+	parameters:toString(list_data)
+	headers:header_data
+	connection:"all_clickup_triggers_and_actions"
+];
+info response;
+}
