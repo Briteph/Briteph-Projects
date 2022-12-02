@@ -1,0 +1,30 @@
+param = List();
+serviceMap = Map();
+for each  line in Services2
+{
+	//	per line data to be push 
+	allData = Map();
+	data = Map();
+	vendorList = List();
+	for each  vendor in line.Vendors
+	{
+		vendorList.add(vendor.Vendor_Name);
+		info "each vendor == " + vendor.Vendor_Name;
+	}
+	data.put("material",line.Material);
+	data.put("vendors",vendorList);
+	allData.put("service",line.Service);
+	allData.put("data",data);
+	param.add(allData);
+	info "param pushed " + allData;
+}
+info "final params" + param;
+serviceMap.put("ClickupID",input.Clickup_ID);
+serviceMap.put("services",param);
+info "SERVICE PARAM" + serviceMap;
+response = invokeurl
+[
+	url :"https://flow.zoho.com/726505648/flow/webhook/incoming?zapikey=1001.9a6d6cbe596ad6c8b84706b0ab4f7b2b.8acd6d4de5de9ea4504221a9d394cb87&isdebug=false"
+	type :POST
+	parameters:serviceMap
+];
