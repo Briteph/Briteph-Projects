@@ -1,0 +1,124 @@
+tasks = list();
+loopHack = "loop.".repeat(1000);
+loopHackList = loopHack.toList(".");
+page = 1;
+request = Map();
+//request.putAll({"module": "quotes"});
+return_val = Collection();
+param = Map();
+param.put("apiKey","ScoroAPI_0fb3e0606295d3d");
+param.put("lang","eng");
+param.put("company_account_id","projectpartners");
+param.put("detailed_response",true);
+param.put("request",{});
+for each  loop in loopHackList
+{
+	param.putAll({"page":page});
+	req = invokeurl
+	[
+		url :"https://projectpartners.scoro.com/api/v2/tasks/list"
+		type :POST
+		parameters:param.toString()
+	];
+	data = req.get("data");
+	tasks.addAll(data);
+	if(data.size() < 25)
+	{
+		break;
+	}
+	else
+	{
+		page = page + 1;
+	}
+}
+delete from Tasks[Event_ID != null];
+for each  task in tasks
+{
+	res = Tasks[Event_ID == task.get("event_id")];
+	
+	time_entries = Collection();
+	entries = task.get("time_entries");
+	for each entry in entries
+    {
+		row1 = Tasks.Time_Entries();
+		row1.Time_Entry_ID = entry.get("time_entry_id");
+		row1.Description= entry.get("description");
+		row1.Title= entry.get("title");
+		row1.User_ID= entry.get("user_id");
+		row1.Active_ID= entry.get("activity_id");
+		row1.Invoice_Line_ID= entry.get("invoice_line_id");
+		row1.Start_Date_Time= entry.get("start_datetime");
+		row1.End_Date_Time= entry.get("end_datetime");
+		row1.Duration= entry.get("duration");
+		row1.Billable_Duration= entry.get("billable_duration");
+		row1.is_completed= entry.get("is_completed");
+		row1.is_confirmed= entry.get("is_confirmed");
+		row1.is_billable= entry.get("is_billable");
+		row1.Completed_Date_Time= entry.get("completed_datetime");
+		row1.is_deleted= entry.get("is_deleted");
+		row1.Deleted_Date= entry.get("deleted_date");
+		time_entries.insert(row1);
+    }
+	if(res.ID == null)
+	{
+		new_task = insert into Tasks
+		[
+			Added_User=zoho.loginuser
+			Event_ID=task.get("event_id")
+			Company_Name = task.get("custom_fields").get(0).get("value")
+			Role1 = task.get("custom_fields").get(1).get("value")
+			Is_Approved = task.get("custom_fields").get(2).get("value")
+			Rating = task.get("custom_fields").get(3).get("value")
+			Comments = task.get("custom_fields").get(4).get("value")
+			Partner = task.get("custom_fields").get(5).get("value")
+			Linked_Role= task.get("custom_fields").get(6).get("value")
+			Partner_Rating= task.get("custom_fields").get(7).get("value")
+			Weekly_Timesheet= task.get("custom_fields").get(8).get("value")
+			Is_Billable= task.get("custom_fields").get(9).get("value")
+			Partner_Comment= task.get("custom_fields").get(10).get("value")
+			SOW= task.get("custom_fields").get(11).get("value")
+			Role_name= task.get("custom_fields").get(12).get("value")
+			
+			Activity_ID=task.get("activity_id")
+			Activity_Type=task.get("activity_type")
+			Event_Name=task.get("event_name")
+			Description=task.get("description")
+			is_personal=task.get("is_personal")
+			Project_ID1=task.get("project_id")
+			Project_Phase_ID=task.get("project_phase_id")
+			Project_Name=task.get("project_name")
+			Company_ID=task.get("company_id")
+			Person_ID1=task.get("person_id")
+			Person_Name=task.get("person_name")
+			Invoice_ID=task.get("invoice_id")
+			Order_ID=task.get("order_id")
+			Quote_ID=task.get("quote_id")
+			Purchase_Order=task.get("purchase_order_id")
+			Rent_Order_ID=task.get("rent_order_id")
+			Bill_ID=task.get("bill_id")
+			Duration_Planned=task.get("duration_planned")
+			Billable_Hours=task.get("billable_hours")
+			Owner_ID=task.get("owner_id")
+			Owner_Email=task.get("owner_email")
+			Permissions=task.get("permissions")
+			is_deleted=task.get("is_deleted")
+			Event_Type=task.get("event_type")
+			is_completed=task.get("is_completed")
+			Date_Time_Completed=task.get("datetime_completed")
+			Assigned_to=task.get("assigned_to")
+			Related_Users=task.get("related_users")
+			Related_Users_Email=task.get("related_users_emails")
+			Duration_Actual=task.get("duration_actual")
+			Start_Date_Time=task.get("start_datetime")
+			Status=task.get("status")
+			Status_Name=task.get("status_name")
+			
+			sortorder = task.get("sortorder")
+			Quote_Line_ID = task.get("quote_line_id")
+			Priority_ID= task.get("priority_id")
+			
+			Time_Entries = time_entries
+			
+		];
+	}
+}
