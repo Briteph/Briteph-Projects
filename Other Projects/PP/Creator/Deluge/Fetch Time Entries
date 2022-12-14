@@ -1,0 +1,78 @@
+entries = list();
+loopHack = "loop.".repeat(5000);
+loopHackList = loopHack.toList(".");
+page = 1;
+request = Map();
+//request.putAll({"module": "quotes"});
+return_val = Collection();
+param = Map();
+current_date = zoho.currentdate;
+start = current_date.subDay(7);
+// filter_object = Map();
+// filter_object.put("start_datetime", start);
+// filter_object.put("end_datetime", current_date);
+param.put("apiKey","ScoroAPI_0fb3e0606295d3d");
+param.put("lang","eng");
+param.put("company_account_id","projectpartners");
+param.put("detailed_response",true);
+param.put("request",{});
+// param.put("filter",filter_object);
+for each  loop in loopHackList
+{
+	param.putAll({"page":page});
+	req = invokeurl
+	[
+		url :"https://projectpartners.scoro.com/api/v2/timeEntries/list"
+		type :POST
+		parameters:param.toString()
+	];
+	data = req.get("data");
+	entries.addAll(data);
+	if(data.size() < 25)
+	{
+		break;
+	}
+	else
+	{
+		page = page + 1;
+	}
+}
+delete from Time_Entries[Time_Entry_ID != null];
+for each  entry in entries
+{
+	duration = entry.get("duration");
+	bilduration = entry.get("billable_duration");
+	// 	time1 = bilduration.toList(":");
+	// 	time = duration.toList(":");
+	// 	seconds1 = toNumber(time1.get(0)) * 3600 + toNumber(time1.get(1)) * 60;
+	// 	seconds = toNumber(time.get(0)) * 3600 + toNumber(time.get(1)) * 60;
+	// 	ms = toNumber(time.get(1)) * 60;
+	// 	ss = toNumber(time.get(2));
+	// 	seconds = hs+ms+ss;
+	res = Tasks[Event_ID == entry.get("event_id")];
+	new_entry = insert into Time_Entries
+	[
+		Added_User=zoho.loginuser
+		Time_Entry_ID=entry.get("time_entry_id")
+		Description=entry.get("description")
+		Title=entry.get("title")
+		User_ID=entry.get("user_id")
+		Invoice_Line_ID=entry.get("invoice_line_id")
+		is_completed=entry.get("is_completed")
+		is_confirmed=entry.get("is_confirmed")
+		is_billable=entry.get("is_billable")
+		Event_ID=entry.get("event_id")
+		Tasks=res.ID
+		Completed_Date_Time=entry.get("completed_datetime")
+		End_Date_time=toString(entry.get("end_datetime")).replaceFirst("T"," ").toDateTime()
+		is_deleted=entry.get("is_deleted")
+		Start_Date_Time=toString(entry.get("start_datetime")).replaceFirst("T"," ").toDateTime()
+		Deleted_Date=entry.get("deleted_date")
+		Calendar_event_id=entry.get("calendar_event_id")
+		Modified_Date_Time=entry.get("modified_date")
+		Time_entry_Type=entry.get("time_entry_type")
+		Activity_ID=entry.get("activity_id")
+	];
+}
+// 	Duration=thisapp.time_to_seconds(duration)
+// 		Billable_Duration=thisapp.time_to_seconds(bilduration)
