@@ -1,0 +1,128 @@
+if(!isEmpty(input.Deal_ID))
+{
+	deal = zoho.crm.getRecordById("Deals",toNumber(input.Deal_ID));
+	if(deal.get("Stage") == "Proposal Approved")
+	{
+		openUrl("https://www.adventurealternatives.com.au/signed","parent window");
+	}
+	input.Year_Levels = deal.get("Year_Levels");
+	camps = zoho.crm.getRelatedRecords("Camps","Deals",toNumber(input.Deal_ID));
+	input.Name = deal.get("Contact_Name").get("name");
+	input.School = deal.get("Account_Name").get("name");
+	input.Email = camps.get(0).get("Email");
+	hide Camp_5;
+	hide Camp_6;
+	hide Camp_7;
+	hide Camp_8;
+	hide Camp_9;
+	hide Camp_10;
+	hide Camp_11;
+	hide Camp_5_ID;
+	hide Camp_6_ID;
+	hide Camp_7_ID;
+	hide Camp_8_ID;
+	hide Camp_9_ID;
+	hide Camp_10_ID;
+	hide Camp_11_ID;
+	for each  camp in camps
+	{
+		if(camp.get("Year_Level") == "Year 5")
+		{
+			input.Number_of_Teachers_5 = camp.get("Number_of_Teachers");
+			input.Number_of_Students_5 = camp.get("Number_of_Students");
+			input.Camp_Groups_5 = camp.get("Number_of_Groups");
+			input.Program_Style_5 = camp.get("Program_Style");
+			input.Program_Location_5 = camp.get("Camp_Locations");
+			input.Camp_5_ID = camp.get("id");
+			disable Program_Location_5;
+			show Camp_5;
+			disable Program_Style_5;
+			disable Number_of_Teachers_5;
+			disable Camp_Groups_5;
+		}
+		if(camp.get("Year_Level") == "Year 6")
+		{
+			show Camp_6;
+			input.Number_of_Teachers_6 = camp.get("Number_of_Teachers");
+			input.Number_of_Students_6 = camp.get("Number_of_Students");
+			input.Camp_Groups_6 = camp.get("Number_of_Groups");
+			input.Program_Location_6 = camp.get("Camp_Locations");
+			input.Program_Style_6 = camp.get("Program_Style");
+			input.Camp_6_ID = camp.get("id");
+			disable Program_Location_6;
+			disable Program_Style_6;
+			disable Number_of_Teachers_6;
+			disable Camp_Groups_6;
+		}
+		if(camp.get("Year_Level") == "Year 7")
+		{
+			show Camp_7;
+			input.Number_of_Teachers_7 = camp.get("Number_of_Teachers");
+			input.Number_of_Students_7 = camp.get("Number_of_Students");
+			input.Camp_Groups_7 = camp.get("Number_of_Groups");
+			input.Program_Location_7 = camp.get("Camp_Locations");
+			input.Program_Style_7 = camp.get("Program_Style");
+			input.Camp_7_ID = camp.get("id");
+			disable Program_Location_7;
+			disable Program_Style_7;
+			disable Number_of_Teachers_7;
+			disable Camp_Groups_7;
+		}
+		if(camp.get("Year_Level") == "Year 8")
+		{
+			show Camp_8;
+			input.Number_of_Teachers_8 = camp.get("Number_of_Teachers");
+			input.Number_of_Students_8 = camp.get("Number_of_Students");
+			input.Camp_Groups_8 = camp.get("Number_of_Groups");
+			input.Program_Location_8 = camp.get("Camp_Locations");
+			input.Program_Style_8 = camp.get("Program_Style");
+			input.Camp_8_ID = camp.get("id");
+			disable Program_Location_8;
+			disable Program_Style_8;
+			disable Number_of_Teachers_8;
+			disable Camp_Groups_8;
+		}
+		if(camp.get("Year_Level") == "Year 9")
+		{
+			show Camp_9;
+			input.Number_of_Teachers_9 = camp.get("Number_of_Teachers");
+			input.Number_of_Students_9 = camp.get("Number_of_Students");
+			input.Camp_Groups_9 = camp.get("Number_of_Groups");
+			input.Program_Location_9 = camp.get("Camp_Locations");
+			input.Program_Style_9 = camp.get("Program_Style");
+			input.Camp_9_ID = camp.get("id");
+			disable Program_Location_9;
+			disable Program_Style_9;
+			disable Number_of_Teachers_9;
+			disable Camp_Groups_9;
+		}
+		if(camp.get("Year_Level") == "Year 10")
+		{
+			show Camp_10;
+			input.Number_of_Teachers_10 = camp.get("Number_of_Teachers");
+			input.Number_of_Students_10 = camp.get("Number_of_Students");
+			input.Camp_Groups_10 = camp.get("Number_of_Groups");
+			input.Program_Location_10 = camp.get("Camp_Locations");
+			input.Program_Style_10 = camp.get("Program_Style");
+			input.Camp_10_ID = camp.get("id");
+			disable Program_Location_10;
+			disable Program_Style_10;
+			disable Number_of_Teachers_10;
+			disable Camp_Groups_10;
+		}
+		if(camp.get("Year_Level") == "Year 11")
+		{
+			show Camp_11;
+			input.Number_of_Teachers_11 = camp.get("Number_of_Teachers");
+			input.Number_of_Students_11 = camp.get("Number_of_Students");
+			input.Camp_Groups_11 = camp.get("Number_of_Groups");
+			input.Program_Location_11 = camp.get("Camp_Locations");
+			input.Program_Style_11 = camp.get("Program_Style");
+			input.Camp_11_ID = camp.get("id");
+			disable Program_Location_11;
+			disable Program_Style_11;
+			disable Number_of_Teachers_11;
+			disable Camp_Groups_11;
+		}
+	}
+}
