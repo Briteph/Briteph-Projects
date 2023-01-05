@@ -1,0 +1,27 @@
+student_data = Students[Name.first_name.containsIgnoreCase(input.Student_First_Name) && Name.last_name.containsIgnoreCase(input.Student_Last_Name) && Email.containsIgnoreCase(input.Email)];
+if(student_data.ID.isEmpty())
+{
+	// add student
+	student_id = insert into Students
+	[
+		Added_User=zoho.loginuser
+		Name.first_name=input.Student_First_Name
+		Name.last_name=input.Student_Last_Name
+		Email=input.Email
+		Birthdate=input.Birthday
+		Phone_Number=input.Emergency_Contact_Number
+		More_Info=input.Any_more_info
+	];
+	input.Student = student_id;
+	added_student = Students[ID == student_id];
+	added_student.Button="<a href=\"#Page:Student_Record?student_id=" + added_student.ID + "\" style=\"text-decoration:none; padding-left:25px;padding-right:25px;padding-top:10px;padding-bottom:10px;font-weight:600; font-size:14px;color:white; background-color:#251cb6;border-radius:20px; margin-top:15px;\">View Detailed Record</a>";
+	added_student = Students[ID == student_data.ID];
+	added_student.Camps=input.Camp;
+}
+else
+{
+	// update student
+	input.Student = student_data.ID;
+	student_data = Students[ID == student_data.ID];
+	student_data.Camps=input.Camp;
+}
