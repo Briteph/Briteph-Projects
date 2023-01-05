@@ -1,0 +1,21 @@
+camp_data = zoho.crm.getRecordById("Camps",id);
+deal_id = camp_data.get("Deal").get("id");
+deal_data = zoho.crm.getRecordById("Deals",deal_id);
+related_camps = zoho.crm.getRelatedRecords("Camps","Deals",deal_id);
+year_levels = deal_data.get("Year_Levels");
+year_level_num = year_levels.size();
+count = 0;
+camps_added = false;
+for each  camp in related_camps
+{
+	year_level = camp.get("Year_Level");
+	if(year_levels.containsIgnoreCase(year_level))
+	{
+		count = count + 1;
+	}
+	if(year_level_num == count)
+	{
+		camps_added = true;
+	}
+}
+info zoho.crm.updateRecord("Deals",deal_id,{"All_Camps_Added":camps_added});
