@@ -1,0 +1,19 @@
+void defaultFunction(Students selected_student)
+{
+	if(thisapp.permissions.loginUserProfile() != "Instructor")
+	{
+		//info selected_student;
+		selected_student.Group="1";
+		group_number = "1";
+		group = Camp_Groups[Camps == selected_student.Camps.ID && Camp_Group_Number == group_number];
+		selected_student.Camp_Groups=group.ID;
+    ----- Count Number of Students ------
+		campGroups = Camp_Groups[ID != 0];
+		for each  groups in campGroups
+		{
+			count = groups.Students.toList().size();
+			// 			info count;
+			groups.Number_of_Students=count;
+		}
+	}
+}
