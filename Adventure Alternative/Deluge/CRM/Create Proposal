@@ -3,12 +3,11 @@ school = deal_data.get("Account_Name").get("name");
 folder_id = deal_data.get("Folder_ID");
 deal_name = deal_data.get("Deal_Name");
 year_levels = deal_data.get("Year_Levels");
-// program_style = deal_data.get("Program_Style");
+include = deal_data.get("Include_Booking_Form");
 time = zoho.currenttime.getTime("12","false");
 bookingForms = "https://creatorapp.zohopublic.com/sustainableadventuresptyltd/proposal/form-embed/Proposals/GJAeQ3SEjff8tTU7hn1NpRW7ZQN7n8ADAbG7S2PQbdSR5MWBN0rvPSgQQdxOr6E7jTf9V89JX8GmmtSxT7YHAfFpBuRj4wC1Ukha?Deal_ID=" + id;
 dataMap = Map();
 dataMap.put("Booking_Form_URL",bookingForms);
-update = zoho.crm.updateRecord("Deals",id,dataMap);
 // bookingForm = deal_data.get("Booking_Form_URL");
 values_map = Map();
 dateString = toString(zoho.currentdate,"dd MMM yyyy");
@@ -17,7 +16,9 @@ values_map.put("Account_Name",school);
 values_map.put("Deal_Name",deal_name);
 values_map.put("Year_Levels",year_levels);
 values_map.put("Date",dateString);
+values_map.put("Include_Booking",include);
 values_map.put("Booking_URL",bookingForms);
+update = zoho.crm.updateRecord("Deals",id,dataMap);
 // // Construct a KEY-VALUE variable to hold the output settings
 output_settings = Map();
 output_settings.put("doc_name",school + " (Camp " + year_levels + ") " + dateString);
@@ -58,13 +59,17 @@ for each  camp in camps
 		return "Warning:Some Camps are not ready for proposal!";
 		break;
 	}
+	if(camp.get("Camp_Start_Date") == null && camp.get("Camp_End_Date") == null)
+	{
+		return "Please Input Start and End Date in Camps";
+		break;
+	}
 	// 	program_location = deal_data.get("Program_Style");
 	// 	subNumStud = activities.get("Number_of_Student1").toLong();
 	// 	total = activities.get("Subtotal").toLong();
 	for each  activity in activities
 	{
 		activity_name = activity.get("Activity_Name").get("name");
-		info activity.get("Activity_Check");
 		if(year_level == "Year 5")
 		{
 			info "year 5";
@@ -93,7 +98,6 @@ for each  camp in camps
 				act5.add(activity.get("Activity_Name").get("name"));
 				values_map.put("Camp_5_Activities",act5);
 			}
-			info act5;
 			camp_5.add(item);
 		}
 		else if(year_level == "Year 6")
@@ -285,7 +289,6 @@ for each  camp in camps
 	}
 	if(fixedCost.size() != null)
 	{
-		info "fixCost";
 		for each  fixed in fixedCost
 		{
 			activity_name1 = fixed.get("Activity_Name1").get("name");
@@ -373,6 +376,7 @@ output_settings.put("folder_id",deal_data.get("Folder_ID"));
 output_settings.put("output_format","pdf");
 // Perform the Merge and store task
 response = zoho.writer.mergeAndStore(docId,values_map,output_settings,"zoho_writer_connection");
+info response;
 docuemnt_id = response.get("document_id");
 header = Map();
 header.put("Accept","application/vnd.api+json");
@@ -395,4 +399,11 @@ response = invokeurl
 ];
 update_deal_data = {"Proposal_PDF_URL":response.get("data").get("attributes").get("permalink"),"PDF_ID":docuemnt_id,"Stage":"Proposal Created"};
 zoho.crm.updateRecord("Deals",id,update_deal_data,{"trigger":{"workflow"}});
-return "Proposal Created!";
+if(include == true)
+{
+	return "Proposal Created!";
+}
+else
+{
+	return "Proposal Without Booking Form Created!";
+}
