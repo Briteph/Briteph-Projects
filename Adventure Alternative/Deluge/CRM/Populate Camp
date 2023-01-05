@@ -1,0 +1,72 @@
+camp = zoho.crm.getRecordById("Camps",id);
+yearLevel = camp.get("Year_Level");
+products = zoho.crm.searchRecords("Products","(Year_Level:equals:" + yearLevel + ")");
+info products;
+productList = list();
+param = Map();
+if(camp.get("Number_of_Days") == "3")
+{
+	info 3;
+	response = zoho.crm.searchRecords("Products","(Product_Name:equals:3-Day Camp)");
+	valueMap = Map();
+	// 	valueMap = {"Activity_Name":response.get(0).get("id")};
+	valueMap.put("Activity_Name",response.get(0).get("id"));
+	valueMap.put("Cost",response.get(0).get("Unit_Price"));
+	valueMap.put("Description",response.get(0).get("Description"));
+	valueMap.put("Activity_Check",response.get(0).get("Activity"));
+	autoList = list();
+	productList.add(valueMap);
+	parammap = Map();
+	param.put("Related_Camp_Activities",productList);
+	updateField = zoho.crm.updateRecord("Camps",id,param);
+}
+if(camp.get("Number_of_Days") == "4")
+{
+	info 4;
+	response = zoho.crm.searchRecords("Products","(Product_Name:equals:4-Day Camp)");
+	valueMap = Map();
+	// 	valueMap = {"Activity_Name":response.get(0).get("id")};
+	valueMap.put("Activity_Name",response.get(0).get("id"));
+	valueMap.put("Cost",response.get(0).get("Unit_Price"));
+	valueMap.put("Description",response.get(0).get("Description"));
+	valueMap.put("Activity_Check",response.get(0).get("Activity"));
+	autoList = list();
+	productList.add(valueMap);
+	parammap = Map();
+	param.put("Related_Camp_Activities",productList);
+	updateField = zoho.crm.updateRecord("Camps",id,param);
+}
+if(camp.get("Number_of_Days") == "5")
+{
+	info 5;
+	response = zoho.crm.searchRecords("Products","(Product_Name:equals:5-Day Camp)");
+	valueMap = Map();
+	// 	valueMap = {"Activity_Name":response.get(0).get("id")};
+	valueMap.put("Activity_Name",response.get(0).get("id"));
+	valueMap.put("Cost",response.get(0).get("Unit_Price"));
+	valueMap.put("Description",response.get(0).get("Description"));
+	valueMap.put("Activity_Check",response.get(0).get("Activity"));
+	autoList = list();
+	productList.add(valueMap);
+	parammap = Map();
+	param.put("Related_Camp_Activities",productList);
+	updateField = zoho.crm.updateRecord("Camps",id,param);
+}
+for each  prod in products
+{
+	prodID = prod.get("id");
+	valMap = Map();
+	valMap.put("Activity_Name",prodID);
+	valMap.put("Cost",prod.get("Unit_Price"));
+	valMap.put("Description",prod.get("Description"));
+	valMap.put("Activity_Check",prod.get("Activity"));
+	auto = list();
+	productList.add(valMap);
+	// 	param = Map();
+	param.put("Related_Camp_Activities",productList);
+	bulkField = zoho.crm.updateRecord("Camps",id,param);
+}
+info valMap;
+// info response.get(0).get("id");
+// info param;
+//4820259000000507135
