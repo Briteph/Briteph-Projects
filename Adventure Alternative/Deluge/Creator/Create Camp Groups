@@ -1,0 +1,19 @@
+number_of_group = input.Camp_Group_Number;
+info number_of_group;
+loopsCount = "loop.".repeat(number_of_group).toList(".");
+camp_group_number_count = 1;
+for each  loop in loopsCount
+{
+	if(number_of_group >= camp_group_number_count)
+	{
+		camp_group = insert into Camp_Groups
+		[
+			Added_User=zoho.loginuser
+			Camps=input.ID
+			Camp_Group_Number=camp_group_number_count
+			School=input.School.Organisation_Name
+		];
+		camp_group_number_count = camp_group_number_count + 1;
+	}
+}
+info true;
