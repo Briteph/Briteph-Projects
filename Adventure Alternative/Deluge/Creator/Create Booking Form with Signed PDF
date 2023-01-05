@@ -1,0 +1,119 @@
+deal = zoho.crm.getRecordById("Deals",input.Deal_ID.toLong());
+info deal;
+folderID = deal.get("Folder_ID");
+info folderID;
+dateString = toString(zoho.currentdate,"dd MMM yyyy");
+zoho.writer.getMergeFields("ffbir5127367f1bbc4aa380973df0b33cca15","zohowriter");
+valMap = Map();
+YearLevel = input.Year_Levels;
+valMap.put("YearLevel",input.Year_Levels);
+if(Year_Levels == "Year 5")
+{
+	info "y5";
+	valMap.put("Camp5_Students",input.Number_of_Students_5);
+	valMap.put("Camp5_Style",input.Program_Style_5);
+	valMap.put("Camp5_Teachers",input.Number_of_Teachers_5);
+	valMap.put("Camp5_Groups",input.Camp_Groups_5);
+	valMap.put("Camp5_Location",input.Program_Location_5);
+}
+if(Year_Levels == "Year 6")
+{
+	valMap.put("Camp6_Students",input.Number_of_Students_6);
+	valMap.put("Camp6_Style",input.Program_Style_6);
+	valMap.put("Camp6_Teachers",input.Number_of_Teachers_6);
+	valMap.put("Camp6_Groups",input.Camp_Groups_6);
+	valMap.put("Camp6_Location",input.Program_Location_6);
+}
+if(Year_Levels == "Year 7")
+{
+	valMap.put("Camp7_Students",input.Number_of_Students_7);
+	valMap.put("Camp7_Style",input.Program_Style_7);
+	valMap.put("Camp7_Teachers",input.Number_of_Teachers_7);
+	valMap.put("Camp7_Groups",input.Camp_Groups_7);
+	valMap.put("Camp7_Location",input.Program_Location_7);
+}
+if(Year_Levels == "Year 8")
+{
+	valMap.put("Camp8_Students",input.Number_of_Students_8);
+	valMap.put("Camp8_Style",input.Program_Style_8);
+	valMap.put("Camp8_Teachers",input.Number_of_Teachers_8);
+	valMap.put("Camp8_Groups",input.Camp_Groups_8);
+	valMap.put("Camp8_Location",input.Program_Location_8);
+}
+if(Year_Levels == "Year 9")
+{
+	valMap.put("Camp9_Students",input.Number_of_Students_9);
+	valMap.put("Camp9_Style",input.Program_Style_9);
+	valMap.put("Camp9_Teachers",input.Number_of_Teachers_9);
+	valMap.put("Camp9_Groups",input.Camp_Groups_9);
+	valMap.put("Camp9_Location",input.Program_Location_9);
+}
+if(Year_Levels == "Year 10")
+{
+	valMap.put("Camp10_Students",input.Number_of_Students_10);
+	valMap.put("Camp10_Style",input.Program_Style_10);
+	valMap.put("Camp10_Teachers",input.Number_of_Teachers_10);
+	valMap.put("Camp10_Groups",input.Camp_Groups_10);
+	valMap.put("Camp10_Location",input.Program_Location_10);
+}
+if(Year_Levels == "Year 11")
+{
+	valMap.put("Camp11_Students",input.Number_of_Students_11);
+	valMap.put("Camp11_Style",input.Program_Style_11);
+	valMap.put("Camp11_Teachers",input.Number_of_Teachers_11);
+	valMap.put("Camp11_Groups",input.Camp_Groups_11);
+	valMap.put("Camp11_Location",input.Program_Location_11);
+}
+imgURL = "https://creatorexport.zoho.com/file/sustainableadventuresptyltd/proposal/All_Proposals/" + input.ID + "/Signature/image-download/X6PZh5kOV0TAWdqs8ejBpTMryVZX08OKtD2v2TkxAMDKFJqXR6mqkuMm1wuUCYqNu9vUwV1YrUzq8aQAhQCS8qJtuNxWSYDjgzpO?filepath=/" + input.Signature;
+valMap.put("Name",input.Name);
+valMap.put("School",input.School);
+valMap.put("Sign",imgURL);
+// outputSetting = Map();
+// outputSetting.put("doc_name",input.School + " (Camp " + input.Year_Levels + ") " + dateString);
+// outputSetting.put("folder_id",folderID);
+// writer = zoho.writer.mergeAndStore("ffbir5127367f1bbc4aa380973df0b33cca15",valMap,outputSetting,"zohowriter");
+// info writer;
+// documentID = writer.get("document_id");
+// info documentID;
+// valMap = Map();
+// valMap.put("", "");
+outputSetting = Map();
+outputSetting.put("doc_name",input.School + " (Camp " + input.Year_Levels + ") Booking form with Signature " + dateString);
+outputSetting.put("folder_id",folderID);
+outputSetting.put("output_format","pdf");
+param = Map();
+param.put("merge_data",{"data":valMap});
+param.put("output_settings",outputSetting);
+pdf = invokeurl
+[
+	url :"https://zohoapis.com/writer/api/v1/documents/ffbir5127367f1bbc4aa380973df0b33cca15/merge/store"
+	type :POST
+	parameters:param
+	connection:"zohowriter"
+];
+// pdf = zoho.writer.mergeAndStore(documentID,valMap,outputSetting,"zohowriter");
+info pdf;
+pdfDocID = pdf.get("document_id");
+info pdfDocID;
+header = Map();
+header.put("Accept","application/vnd.api+json");
+data = Map();
+dataParams = Map();
+attParams = Map();
+attParams.put("resource_id",pdfDocID);
+attParams.put("shared_type","everyone");
+attParams.put("role_id","34");
+dataParams.put("attributes",attParams);
+dataParams.put("type","permissions");
+data.put("data",dataParams);
+api = invokeurl
+[
+	url :"https://www.zohoapis.com/workdrive/api/v1/permissions"
+	type :POST
+	parameters:data.toString()
+	headers:header
+	connection:"zohoworkdrive"
+];
+info api;
+updateDeal = {"Signed_Booking_Form_URL":api.get("data").get("attributes").get("permalink")};
+zoho.crm.updateRecord("Deals",input.Deal_ID.toLong(),updateDeal,{"trigger":{"workflow"}});
