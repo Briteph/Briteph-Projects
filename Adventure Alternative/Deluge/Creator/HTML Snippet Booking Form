@@ -1,0 +1,52 @@
+<%{
+	%>
+<html>
+<title> Test </title>
+<head> 
+<style>
+#proposal-form-container{
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	width:1000px;
+	height: 100%;
+}
+iframe{
+	overflow-x:hidden!important;
+	overflow-y:hidden!important;
+}
+.zc-form-embed .page_content_wrapper .zc-form-fullheight .form-table {
+	border: none!important;
+}
+</style>
+
+</head>
+<body>
+	<h1 style="text-align:center;"> Adventure Alternatives Booking Form </h1>
+	<div id="proposal-form-container" class="container">
+		<div class = "row"> 
+			<div class ="column">
+<%
+	if(isEmpty(input.deal_id))
+	{
+		%>
+<iframe height='1600px' width='1000px'  frameborder='0' allowTransparency='true' scrolling='auto' src='https://creatorapp.zohopublic.com/sustainableadventuresptyltd/proposal/form-embed/Proposals/GJAeQ3SEjff8tTU7hn1NpRW7ZQN7n8ADAbG7S2PQbdSR5MWBN0rvPSgQQdxOr6E7jTf9V89JX8GmmtSxT7YHAfFpBuRj4wC1Ukha'></iframe>
+<%
+	}
+	else
+	{
+		%>
+<iframe height='1600px' width='1000px' frameborder='0' allowTransparency='true' scrolling='auto' src='https://creatorapp.zohopublic.com/sustainableadventuresptyltd/proposal/form-embed/Proposals/GJAeQ3SEjff8tTU7hn1NpRW7ZQN7n8ADAbG7S2PQbdSR5MWBN0rvPSgQQdxOr6E7jTf9V89JX8GmmtSxT7YHAfFpBuRj4wC1Ukha?Deal_ID=<%=input.deal_id%>' ></iframe>
+<%
+	}
+	%>
+</div>
+		</div>
+	</div>
+	
+</body>
+
+</html>
+<%
+
+}%>
