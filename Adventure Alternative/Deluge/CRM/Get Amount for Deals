@@ -1,0 +1,19 @@
+// campRecord = zoho.crm.getRecordById("Camps", campID);
+// totalCost = campRecord.get("Total_Cost1");
+relatedRecord = zoho.crm.getRelatedRecords("Camps","Deals",dealID);
+// info relatedRecord;
+costList = list();
+for each  record in relatedRecord
+{
+	totalCost = record.get("Total_Cost1");
+	costList.add(totalCost);
+}
+info costList;
+average = costList.average();
+total = average * costList.size();
+info average;
+info total;
+valueMap = Map();
+valueMap.put("Amount",total);
+updateAmount = zoho.crm.updateRecord("Deals",dealID,valueMap);
+info updateAmount;
