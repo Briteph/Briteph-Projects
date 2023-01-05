@@ -1,0 +1,19 @@
+getDeleted = invokeurl
+[
+	url :"https://www.zohoapis.com/crm/v3/Camps/deleted?type=all"
+	type :GET
+	connection:"zoho_crm_connection"
+];
+// info getDeleted;
+info getDeleted.get("data").size();
+crmID = getDeleted.get("data").get(0).get("id");
+searchCreator = zoho.creator.getRecords("sustainableadventuresptyltd","camp","All_Camps","Zoho_CRM_ID==\"" + crmID + "\"",1,200,"zohocreatorconnection");
+creatorID = searchCreator.get("data").get(0).get("ID");
+info creatorID;
+creatorDelete = invokeurl
+[
+	url :"https://creator.zoho.com/api/v2/sustainableadventuresptyltd/camp/report/All_Camps/" + creatorID
+	type :DELETE
+	connection:"zohocreatorconnection"
+];
+info creatorDelete;
