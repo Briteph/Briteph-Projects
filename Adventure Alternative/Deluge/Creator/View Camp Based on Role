@@ -1,0 +1,16 @@
+if(thisapp.permissions.loginUserProfile() == "Teacher Coordinator")
+{
+	openUrl("#Page:Camp?camp_id=" + input.ID + "&org_id=" + input.School.ID,"parent window");
+}
+else if(thisapp.permissions.loginUserProfile() == "Teacher")
+{
+	openUrl("#Page:Camp_Information?camp_id=" + input.ID + "&org_id=" + input.School.ID,"parent window");
+}
+else if(thisapp.permissions.loginUserProfile() == "Instructor")
+{
+	openUrl("#Page:Camp_Detail?camp_id=" + input.ID + "&org_id=" + input.School.ID,"parent window");
+}
+else
+{
+	openUrl("#Page:Camp_Details?camp_id=" + input.ID + "&org_id=" + input.School.ID,"parent window");
+}
