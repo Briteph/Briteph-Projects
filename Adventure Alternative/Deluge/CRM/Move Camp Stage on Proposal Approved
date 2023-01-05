@@ -1,0 +1,9 @@
+dealRecords = zoho.crm.getRecordById("Deals",dealID);
+relatedCamp = zoho.crm.getRelatedRecords("Camps","Deals",dealID);
+updateMap = Map();
+for each  records in relatedCamp
+{
+	updateMap.put("Stage","Preparation");
+	update = zoho.crm.updateRecord("Camps",records.get("id"),updateMap);
+}
+info update;
