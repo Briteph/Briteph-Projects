@@ -1,0 +1,293 @@
+!!Create Button for Multiple first.!!
+
+void Export(Camps selected_camps)
+{
+	//----------- Get Template ID -------------//
+	getTemplate = invokeurl
+	[
+		url :"https://sheet.zoho.com/api/v2/templates"
+		type :GET
+		parameters:{"method":"template.list"}
+		connection:"zoho_sheet_connection"
+	];
+	templateID = getTemplate.get("templates").get(0).get("resource_id");
+	//----- Create Workbook from Template -----//
+	getWorkbook = invokeurl
+	[
+		url :"https://sheet.zoho.com/api/v2/createfromtemplate"
+		type :POST
+		parameters:{"method":"workbook.createfromtemplate","resource_id":templateID,"workbook_name":selected_camps.Camp_Name}
+		connection:"zoho_sheet_connection"
+	];
+	workbookID = getWorkbook.get("resource_id");
+	for each  camps in selected_camps
+	{
+		dataList = List();
+		valueMap = Map();
+		student = Students[Camps == camps.ID];
+		count = 1;
+		teacherCount = 0;
+		studentCount = 0;
+		campGroup = Camp_Groups[Camps == camps.ID];
+		teacher = Teacher[ID == campGroup.Teacher1];
+		teacherGroup = Camp_Groups[Camps == camps.ID && Teacher1 == teacher.ID];
+		for each  teach in teacher
+		{
+			teacherMedForms = Medical_and_Dietary_Forms_for_Teachers[ID == teach.Medical_and_Dietary_Forms_for_Teachers];
+			dataMap = Map();
+			dataMap.put("Media Consent",teacherMedForms.Media_Consent);
+			dataMap.put("Group",teacherGroup.Camp_Group_Number);
+			dataMap.put("First Name",teach.Name.first_name);
+			dataMap.put("Last Name",teach.Name.last_name);
+			dataMap.put("Birthdate",teacherMedForms.Teacher_Birth_Date);
+			dataMap.put("Emergency Contact",teacherMedForms.Name);
+			dataMap.put("Relationship",teacherMedForms.Relationship_to_Teacher);
+			dataMap.put("Mobile Phone Number",teacherMedForms.Emergency_Contact_Number);
+			dataMap.put("Second Phone Number",teacherMedForms.Second_Phone_Number);
+			dataMap.put("Email",teacherMedForms.Email);
+			dataMap.put("Medicare Card Number",teacherMedForms.Medicare_Card_Number);
+			dataMap.put("Medicare Ref No",teacherMedForms.Medicare_Ref_Number);
+			dataMap.put("Medicare Expiry Date",teacherMedForms.Medicare_card_Expiry_Date);
+			dataMap.put("Private Health Care Provider",teacherMedForms.Private_Health_Care_Provider);
+			dataMap.put("Private Health Care Number",teacherMedForms.Private_Health_Care_Number);
+			dataMap.put("Tetanus in past 12 months",teacherMedForms.Tetanus_booster1);
+			dataMap.put("Injury/Illness",teacherMedForms.Teacher_suffered_following.toString());
+			dataMap.put("Injury/Illness Info",teacherMedForms.Please_provide_more_information);
+			dataMap.put("Asthma?",teacherMedForms.Does_your_child_suffer_from_asthma);
+			dataMap.put("Date of Last Attack",teacherMedForms.Date_of_Last_Attack);
+			dataMap.put("Hospitilised due to asthma?",teacherMedForms.Hospitalised_asthma);
+			dataMap.put("Regular Medication",teacherMedForms.What_regular_medication_are);
+			dataMap.put("Quantities and Daily Dosages",teacherMedForms.Medical_quantities);
+			dataMap.put("Additional Medication in cae of an attack",teacherMedForms.Additional_medication);
+			dataMap.put("Known Trigger Factors",teacherMedForms.Known_triggers);
+			dataMap.put("Allergies?",teacherMedForms.Suffer_from_allergy);
+			dataMap.put("Allergy",teacherMedForms.Child_allergies);
+			dataMap.put("Type of Reaction",teacherMedForms.Past_allergies);
+			dataMap.put("Signs and symptoms of reaction",teacherMedForms.Signs_symptoms_reaction1);
+			dataMap.put("Date of last reaction",teacherMedForms.Last_reaction_date);
+			dataMap.put("Ever hospitilised for allergic reaction",teacherMedForms.Hospitalised_allergies);
+			dataMap.put("Preventive Medication",teacherMedForms.Prevent_allergy_medication1);
+			dataMap.put("Treatment for allergy",teacherMedForms.Treatment_allergy_reaction1);
+			dataMap.put("Anaphylactic?",teacherMedForms.Epi_pen);
+			dataMap.put("Is your chid on any medication?",teacherMedForms.Are_you_on_any_medication);
+			dataMap.put("More Info",teacherMedForms.Medication_Information);
+			dataMap.put("Dietary",teacherMedForms.Special_dietary);
+			dataMap.put("Dietary More Info",teacherMedForms.More_info_food);
+			dataMap.put("Swim 50 metres",teacherMedForms.Can_you_swim_50_metres);
+			dataMap.put("Ride a bicycle",teacherMedForms.Can_you_ride_a_bicycle);
+			dataMap.put("Paracetamol",teacherMedForms.Authorise_paracetamol);
+			dataMap.put("Ibuprofen",teacherMedForms.Authorise_ibuprofen);
+			dataMap.put("Antihistamine",teacherMedForms.Authorise_antihistamine);
+			dataMap.put("Any other information that you would like us to know?",teacherMedForms.Any_more_info1);
+			dataMap.put("COVID Declaration",teacherMedForms.COVID_declaration.toString());
+			queryMap = Map();
+			queryMap.put("header_row",2);
+			if(campGroup.Teacher1 == teach.ID && campGroup.Camp_Group_Number == "1")
+			{
+				dataMap.put("Type","Teacher");
+				dataMap.put("Number",count);
+				count = count + 1;
+				teacherCount = count;
+				createSheet = zoho.sheet.createRecords(workbookID,"GROUP 1",dataMap,queryMap,"zoho_sheet_connection");
+			}
+			else if(campGroup.Teacher1 == teach.ID && campGroup.Camp_Group_Number == "2")
+			{
+				dataMap.put("Type","Teacher");
+				dataMap.put("Number",count);
+				count = count + 1;
+				teacherCount = count;
+				createSheet = zoho.sheet.createRecords(workbookID,"GROUP 2",dataMap,queryMap,"zoho_sheet_connection");
+			}
+			else if(campGroup.Teacher1 == teach.ID && campGroup.Camp_Group_Number == "3")
+			{
+				dataMap.put("Type","Teacher");
+				dataMap.put("Number",count);
+				count = count + 1;
+				teacherCount = count;
+				createSheet = zoho.sheet.createRecords(workbookID,"GROUP 3",dataMap,queryMap,"zoho_sheet_connection");
+			}
+			else if(campGroup.Teacher1 == teach.ID && campGroup.Camp_Group_Number == "4")
+			{
+				dataMap.put("Type","Teacher");
+				dataMap.put("Number",count);
+				count = count + 1;
+				teacherCount = count;
+				createSheet = zoho.sheet.createRecords(workbookID,"GROUP 4",dataMap,queryMap,"zoho_sheet_connection");
+			}
+			else if(campGroup.Teacher1 == teach.ID && campGroup.Camp_Group_Number == "5")
+			{
+				dataMap.put("Type","Teacher");
+				dataMap.put("Number",count);
+				count = count + 1;
+				teacherCount = count;
+				createSheet = zoho.sheet.createRecords(workbookID,"GROUP 5",dataMap,queryMap,"zoho_sheet_connection");
+			}
+			else if(campGroup.Teacher1 == teach.ID && campGroup.Camp_Group_Number == "6")
+			{
+				dataMap.put("Type","Teacher");
+				dataMap.put("Number",count);
+				count = count + 1;
+				teacherCount = count;
+				createSheet = zoho.sheet.createRecords(workbookID,"GROUP 6",dataMap,queryMap,"zoho_sheet_connection");
+			}
+			else if(campGroup.Teacher1 == teach.ID && campGroup.Camp_Group_Number == "7")
+			{
+				dataMap.put("Type","Teacher");
+				dataMap.put("Number",count);
+				count = count + 1;
+				teacherCount = count;
+				createSheet = zoho.sheet.createRecords(workbookID,"GROUP 7",dataMap,queryMap,"zoho_sheet_connection");
+			}
+			else if(campGroup.Teacher1 == teach.ID && campGroup.Camp_Group_Number == "8")
+			{
+				dataMap.put("Type","Teacher");
+				dataMap.put("Number",count);
+				count = count + 1;
+				teacherCount = count;
+				createSheet = zoho.sheet.createRecords(workbookID,"GROUP 8",dataMap,queryMap,"zoho_sheet_connection");
+			}
+			else if(campGroup.Teacher1 == teach.ID && campGroup.Camp_Group_Number == "9")
+			{
+				dataMap.put("Type","Teacher");
+				dataMap.put("Number",count);
+				count = count + 1;
+				teacherCount = count;
+				createSheet = zoho.sheet.createRecords(workbookID,"GROUP 9",dataMap,queryMap,"zoho_sheet_connection");
+			}
+			else if(campGroup.Teacher1 == teach.ID && campGroup.Camp_Group_Number == "10")
+			{
+				dataMap.put("Type","Teacher");
+				dataMap.put("Number",count);
+				count = count + 1;
+				teacherCount = count;
+				createSheet = zoho.sheet.createRecords(workbookID,"GROUP 10",dataMap,queryMap,"zoho_sheet_connection");
+			}
+			studentCount = teacherCount;
+			createSheet = zoho.sheet.createRecords(workbookID,"Master",dataMap,queryMap,"zoho_sheet_connection");
+		}
+		for each  stud in student
+		{
+			medFroms = Medical_and_Dietary_Needs[ID == stud.Medical_and_Dietary_Needs];
+			dataMap = Map();
+			dataMap.put("Media Consent",medFroms.Media_Consent);
+			dataMap.put("Group",stud.Group);
+			dataMap.put("First Name",stud.Name.first_name);
+			dataMap.put("Last Name",stud.Name.last_name);
+			dataMap.put("Birthdate",medFroms.Birthday);
+			dataMap.put("Emergency Contact",medFroms.Name);
+			dataMap.put("Relationship",medFroms.Relationship_to_Student);
+			dataMap.put("Mobile Phone Number",medFroms.Emergency_Contact_Number);
+			dataMap.put("Second Phone Number",medFroms.Second_Mobile_Phone);
+			dataMap.put("Email",medFroms.Email);
+			dataMap.put("Medicare Card Number",medFroms.Medicare_Card_Number1);
+			dataMap.put("Medicare Ref No",medFroms.Medicare_Ref_Number);
+			dataMap.put("Medicare Expiry Date",medFroms.Medicare_Card_Expiry_Date);
+			dataMap.put("Private Health Care Provider",medFroms.Private_Health_Care_Provider);
+			dataMap.put("Private Health Care Number",medFroms.Private_Health_Care_Number);
+			dataMap.put("Tetanus in past 12 months",medFroms.Tetanus_booster);
+			dataMap.put("Injury/Illness",medFroms.Child_suffered_following.toString());
+			dataMap.put("Injury/Illness Info",medFroms.Please_provide_more_information);
+			dataMap.put("Asthma?",medFroms.Does_your_child_suffer_from_asthma);
+			dataMap.put("Date of Last Attack",medFroms.Date_of_Last_Attack1);
+			dataMap.put("Hospitilised due to asthma?",medFroms.Hospitalised_asthma);
+			dataMap.put("Regular Medication",medFroms.What_Regular_Medication_are);
+			dataMap.put("Quantities and Daily Dosages",medFroms.Medication_quantities);
+			dataMap.put("Additional Medication in cae of an attack",medFroms.Additional_medication);
+			dataMap.put("Known Trigger Factors",medFroms.What_are);
+			dataMap.put("Allergies?",medFroms.Suffer_from_allergy);
+			dataMap.put("Allergy",medFroms.Child_allergies);
+			dataMap.put("Type of Reaction",medFroms.Past_allergies);
+			dataMap.put("Signs and symptoms of reaction",medFroms.Signs_symptoms_reaction);
+			dataMap.put("Date of last reaction",medFroms.Last_reaction_date);
+			dataMap.put("Ever hospitilised for allergic reaction",medFroms.Hospitalised_allergies);
+			dataMap.put("Preventive Medication",medFroms.Prevent_allergy_medication);
+			dataMap.put("Treatment for allergy",medFroms.Treatment_allergy_reaction1);
+			dataMap.put("Anaphylactic?",medFroms.Epi_pen);
+			dataMap.put("Is your chid on any medication?",medFroms.Is_your_child_on_any_medication);
+			dataMap.put("More Info",medFroms.Medication_Information);
+			dataMap.put("Dietary",medFroms.Special_dietary);
+			dataMap.put("Dietary More Info",medFroms.More_info_food);
+			dataMap.put("Swim 50 metres",medFroms.Can_your_child_swim_50_metres);
+			dataMap.put("Ride a bicycle",medFroms.Can_you_child_ride_a_bicycle);
+			dataMap.put("Paracetamol",medFroms.Authorise_paracetamol);
+			dataMap.put("Ibuprofen",medFroms.Authorise_ibuprofen);
+			dataMap.put("Antihistamine",medFroms.Authorise_antihistamine);
+			dataMap.put("Any other information that you would like us to know?",medFroms.Any_more_info);
+			dataMap.put("COVID Declaration",medFroms.COVID_declaration);
+			queryMap = Map();
+			queryMap.put("header_row",2);
+			if(student.Group == "1")
+			{
+				dataMap.put("Type","Student");
+				dataMap.put("Number",studentCount);
+				studentCount = studentCount + 1;
+				createSheet = zoho.sheet.createRecords(workbookID,"GROUP 1",dataMap,queryMap,"zoho_sheet_connection");
+			}
+			else if(student.Group == "2")
+			{
+				dataMap.put("Type","Student");
+				dataMap.put("Number",studentCount);
+				studentCount = studentCount + 1;
+				createSheet = zoho.sheet.createRecords(workbookID,"GROUP 2",dataMap,queryMap,"zoho_sheet_connection");
+			}
+			else if(student.Group == "3")
+			{
+				dataMap.put("Type","Student");
+				dataMap.put("Number",studentCount);
+				studentCount = studentCount + 1;
+				createSheet = zoho.sheet.createRecords(workbookID,"GROUP 3",dataMap,queryMap,"zoho_sheet_connection");
+			}
+			else if(student.Group == "4")
+			{
+				dataMap.put("Type","Student");
+				dataMap.put("Number",studentCount);
+				studentCount = studentCount + 1;
+				createSheet = zoho.sheet.createRecords(workbookID,"GROUP 4",dataMap,queryMap,"zoho_sheet_connection");
+			}
+			else if(student.Group == "5")
+			{
+				dataMap.put("Type","Student");
+				dataMap.put("Number",studentCount);
+				studentCount = studentCount + 1;
+				createSheet = zoho.sheet.createRecords(workbookID,"GROUP 5",dataMap,queryMap,"zoho_sheet_connection");
+			}
+			else if(student.Group == "6")
+			{
+				dataMap.put("Type","Student");
+				dataMap.put("Number",studentCount);
+				studentCount = studentCount + 1;
+				createSheet = zoho.sheet.createRecords(workbookID,"GROUP 6",dataMap,queryMap,"zoho_sheet_connection");
+			}
+			else if(student.Group == "7")
+			{
+				dataMap.put("Type","Student");
+				dataMap.put("Number",studentCount);
+				studentCount = studentCount + 1;
+				createSheet = zoho.sheet.createRecords(workbookID,"GROUP 7",dataMap,queryMap,"zoho_sheet_connection");
+			}
+			else if(student.Group == "8")
+			{
+				dataMap.put("Type","Student");
+				dataMap.put("Number",studentCount);
+				studentCount = studentCount + 1;
+				createSheet = zoho.sheet.createRecords(workbookID,"GROUP 8",dataMap,queryMap,"zoho_sheet_connection");
+			}
+			else if(student.Group == "9")
+			{
+				dataMap.put("Type","Student");
+				dataMap.put("Number",studentCount);
+				studentCount = studentCount + 1;
+				createSheet = zoho.sheet.createRecords(workbookID,"GROUP 9",dataMap,queryMap,"zoho_sheet_connection");
+			}
+			else if(student.Group == "10")
+			{
+				dataMap.put("Type","Student");
+				dataMap.put("Number",studentCount);
+				studentCount = studentCount + 1;
+				createSheet = zoho.sheet.createRecords(workbookID,"GROUP 10",dataMap,queryMap,"zoho_sheet_connection");
+			}
+			createSheet = zoho.sheet.createRecords(workbookID,"Master",dataMap,queryMap,"zoho_sheet_connection");
+		}
+	}
+	info "Camp Exported! Please Check Zoho Sheets";
+}
