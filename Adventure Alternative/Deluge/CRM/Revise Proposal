@@ -1,0 +1,55 @@
+deal_data = zoho.crm.getRecordById("Deals",id);
+school = deal_data.get("Account_Name").get("name");
+year_levels = deal_data.get("Year_Levels");
+dateString = toString(zoho.currentdate,"dd MMM yyyy");
+docId = deal_data.get("Proposal_URL").remove("https://writer.zoho.com/writer/open/");
+pdf_ID = deal_data.get("PDF_ID");
+header = Map();
+header.put("Accept","application/vnd.api+json");
+data = Map();
+data_param1 = Map();
+att_param1 = Map();
+att_param1.put("status","51");
+data_param1.put("attributes",att_param1);
+data_param1.put("type","files");
+data.put("data",data_param1);
+response = invokeurl
+[
+	url :"https://www.zohoapis.com/workdrive/api/v1/files/" + pdf_ID
+	type :PATCH
+	parameters:data.toString()
+	headers:header
+	connection:"workdrive_connection"
+];
+info response;
+values_map = Map();
+// Construct a KEY-VALUE variable to hold the output settings
+output_settings = Map();
+output_settings.put("doc_name",school + " (Camp " + year_levels + ") " + dateString);
+output_settings.put("folder_id",deal_data.get("Folder_ID"));
+output_settings.put("output_format","pdf");
+// Perform the Merge and store task
+response = zoho.writer.mergeAndStore(docId,values_map,output_settings,"zoho_writer_connection");
+docuemnt_id = response.get("document_id");
+header = Map();
+header.put("Accept","application/vnd.api+json");
+data = Map();
+data_param1 = Map();
+att_param1 = Map();
+att_param1.put("resource_id",docuemnt_id);
+att_param1.put("shared_type","everyone");
+att_param1.put("role_id","34");
+data_param1.put("attributes",att_param1);
+data_param1.put("type","permissions");
+data.put("data",data_param1);
+response = invokeurl
+[
+	url :"https://www.zohoapis.com/workdrive/api/v1/permissions"
+	type :POST
+	parameters:data.toString()
+	headers:header
+	connection:"workdrive_connection"
+];
+update_deal_data = {"Proposal_PDF_URL":response.get("data").get("attributes").get("permalink"),"PDF_ID":docuemnt_id};
+info zoho.crm.updateRecord("Deals",id,update_deal_data,{"trigger":{"workflow"}});
+return "Proposal Revised!";
