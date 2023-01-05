@@ -1,0 +1,12 @@
+creator = zoho.creator.getRecords("sustainableadventuresptyltd","proposal","All_Proposals","Deal_ID ==\"" + id + "\"",1,200,"zohocreatorconnection");
+creatorID = creator.get("data").get(0).get("ID");
+sign = creator.get("data").get(0).get("Signature");
+info creator;
+info creatorID;
+info sign;
+fileImage = invokeurl
+[
+	url :"https://www.creator.zoho.com" + sign
+	type :GET
+];
+info fileImage;
