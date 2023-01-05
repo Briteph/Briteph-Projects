@@ -1,0 +1,20 @@
+instructor = Instructor[Name.first_name.containsIgnoreCase(input.Teacher_First_Name) && Name.last_name.containsIgnoreCase(input.Teacher_Last_Name) && Email.containsIgnoreCase(input.Email)];
+if(Instructor.ID.isEmpty())
+{
+	// add instructor
+	instructorID = insert into Instructor
+	[
+		Added_User=zoho.loginuser
+		Name.first_name=input.Teacher_First_Name
+		Name.last_name=input.Teacher_Last_Name
+		Email=input.Email1
+		Phone_Number=input.Emergency_Contact_Number
+	];
+	input.Instructor = instructorID;
+	addInstructor = Instructor[ID == instructorID];
+}
+else
+{
+	// update instructor
+	input.Instructor = instructor.ID;
+}
