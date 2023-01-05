@@ -1,0 +1,5 @@
+proposal_data = zoho.crm.getRecordById("Deals",id);
+org_name = proposal_data.get("Account_Name").get("name");
+year_levels = proposal_data.get("Year_Levels");
+proposal_name = org_name + " - " + year_levels;
+info zoho.crm.updateRecord("Deals",id,{"Deal_Name":proposal_name});
