@@ -1,0 +1,67 @@
+update_camp_list = list();
+//camp 5
+if(!Camp_5_ID.isEmpty())
+{
+	camp5_data = Map();
+	camp5_data.put("Number_of_Students",input.Number_of_Students_5);
+	camp5_data.put("Number_of_Groups",input.Camp_Groups_5);
+	camp5_data.put("id",toNumber(input.Camp_5_ID));
+	update_camp_list.add(camp5_data);
+}
+//camp 6
+if(!Camp_6_ID.isEmpty())
+{
+	camp6_data = Map();
+	camp6_data.put("Number_of_Students",input.Number_of_Students_6);
+	camp6_data.put("Number_of_Groups",input.Camp_Groups_6);
+	camp6_data.put("id",toNumber(input.Camp_6_ID));
+	update_camp_list.add(camp6_data);
+}
+//camp 7
+if(!Camp_7_ID.isEmpty())
+{
+	camp7_data = Map();
+	camp7_data.put("Number_of_Students",input.Number_of_Students_7);
+	camp7_data.put("Number_of_Groups",input.Camp_Groups_7);
+	camp7_data.put("id",toNumber(input.Camp_7_ID));
+	update_camp_list.add(camp7_data);
+}
+//camp 8
+if(!Camp_8_ID.isEmpty())
+{
+	camp8_data = Map();
+	camp8_data.put("Number_of_Students",input.Number_of_Students_8);
+	camp8_data.put("Number_of_Groups",input.Camp_Groups_8);
+	camp8_data.put("id",toNumber(input.Camp_8_ID));
+	update_camp_list.add(camp8_data);
+}
+//camp 9
+if(!Camp_9_ID.isEmpty())
+{
+	camp9_data = Map();
+	camp9_data.put("Number_of_Students",input.Number_of_Students_9);
+	camp9_data.put("Number_of_Groups",input.Camp_Groups_9);
+	camp9_data.put("id",toNumber(input.Camp_9_ID));
+	update_camp_list.add(camp9_data);
+}
+//camp 10
+if(!Camp_10_ID.isEmpty())
+{
+	camp10_data = Map();
+	camp10_data.put("Number_of_Students",input.Number_of_Students_10);
+	camp10_data.put("Number_of_Groups",input.Camp_Groups_10);
+	camp10_data.put("id",toNumber(input.Camp_10_ID));
+	update_camp_list.add(camp10_data);
+}
+//camp 11
+if(!Camp_11_ID.isEmpty())
+{
+	camp11_data = Map();
+	camp11_data.put("Number_of_Students",input.Number_of_Students_11);
+	camp11_data.put("Number_of_Groups",input.Camp_Groups_11);
+	camp11_data.put("id",toNumber(input.Camp_11_ID));
+	update_camp_list.add(camp11_data);
+}
+info zoho.crm.bulkUpdate("Camps",update_camp_list);
+//deal
+info zoho.crm.updateRecord("Deals",input.Deal_ID.toNumber(),{"Proposal_Approved":true},{"trigger":{"workflow","blueprint"}});
