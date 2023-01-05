@@ -1,0 +1,15 @@
+-----Teachers------
+users = input.Camps.Users;
+camp = Camps[ID == input.Camps];
+if(users.containsIgnoreCase(input.Teacher1.Email) == false)
+{
+	camp.Users=users + ", " + input.Teacher1.Email;
+}
+
+----- Instructor -----
+users = input.Camps.Users;
+camp = Camps[ID == input.Camps];
+if(users.containsIgnoreCase(input.Instructor1.Email) == false)
+{
+	camp.Users=users + ", " + input.Instructor1.Email;
+}
