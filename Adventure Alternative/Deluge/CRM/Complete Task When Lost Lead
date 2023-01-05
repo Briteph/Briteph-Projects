@@ -1,0 +1,10 @@
+lead = zoho.crm.getRecordById("Leads",id);
+tasks = zoho.crm.getRelatedRecords("Tasks","Leads",id);
+info tasks;
+updateMap = Map();
+for each  task in tasks
+{
+	taskID = task.get("id");
+	updateMap.put("Status","Completed");
+	update = zoho.crm.updateRecord("Tasks",taskID,updateMap);
+}
