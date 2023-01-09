@@ -1,0 +1,85 @@
+//
+//
+//Get Invoice
+invoiceId = "5367098000003541547";
+invoiceTemplateResponse = invokeurl
+[
+	url :"https://www.zohoapis.com/crm/v3/settings/inventory_templates/5367098000002875370"
+	type :GET
+	connection:"invoicetemplate"
+];
+invoiceContent = invoiceTemplateResponse.get("inventory_templates").get(0).get("content");
+// info invoiceContent;
+//
+//
+//Get Org Information
+orgInfo = invokeurl
+[
+	url :"https://www.zohoapis.com/crm/v3/org"
+	type :GET
+	connection:"zohocrmconnection"
+];
+orgPhoto = invokeurl
+[
+	url :"https://www.zohoapis.com/crm/v3/org/photo"
+	type :GET
+	connection:"zohocrmconnection"
+];
+// info orgPhoto;
+//
+//
+//Get member, membership enrollment and invoice Info
+memEnrollment = zoho.crm.getRecordById("Memberships",id);
+invoiceData = zoho.crm.getRelatedRecords("Invoices","Memberships",id);
+member = zoho.crm.getRecordById("Contacts",memEnrollment.get("Member").get("id"));
+//
+//
+// Populate Invoice Content
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!companyLogo\}",orgPhoto),invoiceContent.replaceAll("\$\{!companyLogo\}"," "));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!org.company_name\}",orgInfo.get("org").get(0).get("company_name")),invoiceContent.replaceAll("\$\{!org.company_name\}"," "));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!org.street\}",orgInfo.get("org").get(0).get("street")),invoiceContent.replaceAll("\$\{!org.street\}"," "));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!org.city\}",orgInfo.get("org").get(0).get("city")),invoiceContent.replaceAll("\$\{!org.city\}"," "));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!org.state\}",orgInfo.get("org").get(0).get("state")),invoiceContent.replaceAll("\$\{!org.state\}"," "));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!org.country\}",orgInfo.get("org").get(0).get("country")),invoiceContent.replaceAll("\$\{!org.country\}"," "));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!org.zip\}",orgInfo.get("org").get(0).get("zip")),invoiceContent.replaceAll("\$\{!org.zip\}"," "));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!Invoices.Invoice_Number\}",invoiceData.get(0).get("Invoice_Number")),invoiceContent.replaceAll("\$\{!Invoices.Invoice_Number\}"," "));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!Invoices.Due_Date\}",invoiceData.get(0).get("Due_Date")),invoiceContent.replaceAll("\$\{!Invoices.Due_Date\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!Invoices.Invoice_Date\}",invoiceData.get(0).get("Invoice_Date")),invoiceContent.replaceAll("\$\{!Invoices.Invoice_Date\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!Invoices.Purchase_Order\}",invoiceData.get(0).get("Purchase_Order")),invoiceContent.replaceAll("\$\{!Invoices.Purchase_Order\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!Invoices.Contact_Name\}",member.get("Full_Name")),invoiceContent.replaceAll("\$\{!Invoices.Contact_Name\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!Invoices.Shipping_Street\}",invoiceData.get(0).get("Shipping_Street")),invoiceContent.replaceAll("\$\{!Invoices.Shipping_Street\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!Invoices.Shipping_City\}",invoiceData.get(0).get("Shipping_City")),invoiceContent.replaceAll("\$\{!Invoices.Shipping_City\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!Invoices.Shipping_State\}",invoiceData.get(0).get("Shipping_State")),invoiceContent.replaceAll("\$\{!Invoices.Shipping_State\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!Invoices.Shipping_Country\}",invoiceData.get(0).get("Shipping_Country")),invoiceContent.replaceAll("\$\{!Invoices.Shipping_Country\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!Invoices.Shipping_Country\}",invoiceData.get(0).get("Shipping_Country")),invoiceContent.replaceAll("\$\{!Invoices.Shipping_Country\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!Invoices.Shipping_Code\}",invoiceData.get(0).get("Shipping_Code")),invoiceContent.replaceAll("\$\{!Invoices.Shipping_Code\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!Invoices.Billing_Street\}",invoiceData.get(0).get("Billing_Street")),invoiceContent.replaceAll("\$\{!Invoices.Billing_Street\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!Invoices.Billing_City\}",invoiceData.get(0).get("Billing_City")),invoiceContent.replaceAll("\$\{!Invoices.Billing_City\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!Invoices.Billing_State\}",invoiceData.get(0).get("Billing_State")),invoiceContent.replaceAll("\$\{!Invoices.Billing_State\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!Invoices.Billing_Country\}",invoiceData.get(0).get("Billing_Country")),invoiceContent.replaceAll("\$\{!Invoices.Billing_Country\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!Invoices.Billing_Code\}",invoiceData.get(0).get("Billing_Code")),invoiceContent.replaceAll("\$\{!Invoices.Billing_Code\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!Invoices.Invoiced_Items.Product_Name\}",invoiceData.get(0).get("Product_Details").get(0).get("product").get("name")),invoiceContent.replaceAll("\$\{!Invoices.Invoiced_Items.Product_Name\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!Invoices.Invoiced_Items.Description\}",invoiceData.get(0).get("Product_Details").get(0).get("product_description")),invoiceContent.replaceAll("\$\{!Invoices.Invoiced_Items.Description\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("${!Invoices.Invoiced_Items.List_Price}","$" + invoiceData.get(0).get("Product_Details").get(0).get("list_price"),true),invoiceContent.replaceAll("\$\{!Invoices.Invoiced_Items.List_Price\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!Invoices.Invoiced_Items.Quantity\}",invoiceData.get(0).get("Product_Details").get(0).get("quantity")),invoiceContent.replaceAll("\$\{!Invoices.Invoiced_Items.Quantity\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("${!Invoices.Invoiced_Items.Discount}","$" + invoiceData.get(0).get("Product_Details").get(0).get("Discount"),true),invoiceContent.replaceAll("\$\{!Invoices.Invoiced_Items.Discount\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("${!Invoices.Invoiced_Items.Total}","$" + invoiceData.get(0).get("Product_Details").get(0).get("total"),true),invoiceContent.replaceAll("\$\{!Invoices.Invoiced_Items.Total\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("${!Invoices.Sub_Total}","$" + invoiceData.get(0).get("Sub_Total"),true),invoiceContent.replaceAll("\$\{!Invoices.Sub_Total\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("${!Invoices.Tax}","$" + invoiceData.get(0).get("Tax"),true),invoiceContent.replaceAll("\$\{!Invoices.Tax\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("${!Invoices.Grand_Total}","$" + invoiceData.get(0).get("Grand_Total"),true),invoiceContent.replaceAll("\$\{!Invoices.Grand_Total\}",""));
+invoiceContent = ifNull(invoiceContent.replaceAll("\$\{!Invoices.Terms_and_Conditions\}",invoiceData.get(0).get("Terms_and_Conditions")),invoiceContent.replaceAll("\$\{!Invoices.Terms_and_Conditions\}",""));
+invoiceContent = invoiceContent.replaceAll("\$\{!userSignature\}","");
+//
+//
+//compose sample message
+eMessage = "Hi there " + member.get("Full_Name") + ", We hope that you are doing well. Please see the attached invoice below, due on " + invoiceData.get(0).get("Due_Date") + ". Remember that you can contact us at any time for any questions you have.";
+//
+// 
+// //Send Invoice via email
+sendmail
+[
+	from :zoho.adminuserid
+	to :member.get("Email")
+	subject :"This is a test"
+	message :eMessage + invoiceContent
+]
