@@ -1,0 +1,90 @@
+membership = zoho.crm.getRecordById("Memberships",id);
+baseMembership = zoho.crm.getRecordById("Base_Memberships",membership.get("Base_Membership").get("id"));
+product = zoho.crm.searchRecords("Products","(Product_Name:equals:" + baseMembership.get("Name") + ")");
+member = zoho.crm.getRecordById("Contacts",membership.get("Member").get("id"));
+householdID = membership.get("Household").get("id");
+household = zoho.crm.getRecordById("Accounts",householdID);
+primaryMember = household.get("Primary_Member_Name").get("name");
+primaryContact = zoho.crm.getRecordById("Contacts",household.get("Primary_Member_Name").get("id"));
+primaryEmail = primaryContact.get("Email");
+shippingStreet = ifNull(primaryContact.get("Mailing_Street"),"");
+shippingCity = ifNull(primaryContact.get("Mailing_City"),"");
+shippingState = ifNull(primaryContact.get("Mailing_State"),"");
+shippingCountry = ifNull(primaryContact.get("Mailing_Country"),"");
+shippingCode = ifNull(primaryContact.get("Mailing_Code"),"");
+billingStreet = ifNull(household.get("Billing_Street"),"");
+billingCity = ifNull(household.get("Billing_City"),"");
+billingState = ifNull(household.get("Billing_State"),"");
+billingCountry = ifNull(household.get("Billing_Country"),"");
+billingCode = ifNull(household.get("Billing_Code"),"");
+//Create an Invoice record
+CInvoice = Map();
+CInvoice.put("Subject","Invoice - " + membership.get("Next_Due_Date").toString("MMMM") + " ( " + membership.get("Name") + " )");
+CInvoice.put("Due_Date",membership.get("Next_Due_Date"));
+CInvoice.put("Account_Name",membership.get("Household").get("id"));
+CInvoice.put("Contact_Name",membership.get("Member").get("id"));
+CInvoice.put("Membership_Enrollment",id);
+CInvoice.put("Billing_City",member.get("Mailing_City"));
+CInvoice.put("Billing_Code",member.get("Mailing_Zip"));
+CInvoice.put("Billing_Country",member.get("Mailing_Country"));
+CInvoice.put("Billing_State",member.get("Mailing_State"));
+CInvoice.put("Billing_Street",member.get("Mailing_Street"));
+CInvoice.put("Product_Details",{{"product":product.get(0).get("id"),"quantity":1}});
+CInvoice.put("Terms_and_Conditions","This is Temporary, You Need to Fill this up");
+newInvoice = zoho.crm.createRecord("Invoices",CInvoice);
+invoice = zoho.crm.getRecordById("Invoices",newInvoice.get("id"));
+invoiceNumber = ifNull(invoice.get("Invoice_Number"),"");
+invoiceDate = ifNull(invoice.get("Invoice_Date"),"");
+invoiceDueDate = ifNull(invoice.get("Due_Date"),"");
+invoicePO = ifNull(invoice.get("Purchase_Order"),"");
+invoiceSubTotal = ifNull(invoice.get("Sub_Total"),"");
+invoiceTax = ifNull(invoice.get("Tax"),"");
+invoicePaidAmount = ifNull(invoice.get("Grand_Total"),"");
+invoiceGrandTotal = ifNull(invoice.get("Grand_Total"),"");
+subform = invoice.get("Product_Details");
+valList = list();
+valMap = Map();
+valMap.put("Invoice_Number",invoiceNumber);
+valMap.put("Issued_Date",invoiceDate);
+valMap.put("Due_Date",invoiceDueDate);
+valMap.put("PO",invoicePO);
+valMap.put("Primary_Member",primaryMember);
+valMap.put("Shipping_Street",shippingStreet);
+valMap.put("Shipping_City",shippingCity);
+valMap.put("Shipping_State",shippingState);
+valMap.put("Shipping_Country",shippingCountry);
+valMap.put("Shipping_Code",shippingCode);
+valMap.put("Billing_Street",billingStreet);
+valMap.put("Billing_City",billingCity);
+valMap.put("Billing_State",billingState);
+valMap.put("Billing_Country",billingCountry);
+valMap.put("Billing_Code",billingCode);
+for each  items in subform
+{
+	item = Map();
+	item.put("Subform.Item",items.get("product").get("name"));
+	item.put("Subform.List_Price",items.get("list_price").toString());
+	item.put("Subform.Qty",items.get("quantity").toString());
+	item.put("Subform.Discount",items.get("Discount").toString());
+	item.put("Subform.Amount",items.get("total_after_discount").toString());
+	valList.add(item);
+}
+valMap.put("Sub_Total",invoiceSubTotal);
+valMap.put("Service_Tax",invoiceTax);
+valMap.put("Paid_Amount",invoicePaidAmount);
+valMap.put("Grand_Total",invoiceGrandTotal);
+valMap.put("Subform",valList);
+paramMap = Map();
+paramMap.put("message","Please find your invoice attached.");
+paramMap.put("subject","Invoice for this Month");
+paramMap.put("merge_data",{"data":valMap});
+paramMap.put("output_format","pdf");
+paramMap.put("recipient_email",primaryEmail);
+response = invokeurl
+[
+	url :"https://zohoapis.com/writer/api/v1/documents/dp9bd3a247bbac97a42d2a1b5b10fddf64cd0/merge/email"
+	type :post
+	parameters:paramMap
+	connection:"writerconnection"
+];
+info response;
