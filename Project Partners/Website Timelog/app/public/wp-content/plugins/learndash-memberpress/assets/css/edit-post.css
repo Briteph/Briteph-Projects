@@ -1,0 +1,22 @@
+#learndash-memberpress-associated-memberships-meta-box .select2-container {
+    width: 100% !important;
+}
+
+#learndash-memberpress-associated-memberships-meta-box .select2-search {
+    width: 100% !important;
+}
+
+#learndash-memberpress-associated-memberships-meta-box .select2-search__field {
+    width: 100% !important;
+}
+
+#learndash-memberpress-associated-memberships-meta-box .select2-selection {
+    border: 1px solid #aaa !important;
+    padding: 3px;
+}
+
+#learndash-memberpress-associated-memberships-meta-box .select2-search__field:focus {
+    border: 0;
+    box-shadow: none;
+    outline: none;
+}

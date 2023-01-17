@@ -1,0 +1,338 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2021-10-14T16:58:47+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.4.0\n"
+
+#: Libraries/MailChimpRequest.php:20
+msgid "This API key is not valid. Please double check it and try again."
+msgstr ""
+
+#: Models/LicensedProduct.php:93
+msgid "Activated"
+msgstr ""
+
+#: Models/LicensedProduct.php:139
+msgid "Deactivated"
+msgstr ""
+
+#: Models/Visit.php:133
+msgid "Views"
+msgstr ""
+
+#: Models/Visit.php:134
+#: Services/API/RestAnalyticsController.php:499
+msgid "%d views"
+msgstr ""
+
+#: Models/Visit.php:138
+#: Services/API/RestAnalyticsController.php:503
+msgid "Avg. View Time"
+msgstr ""
+
+#: Models/Visit.php:140
+msgid "0 seconds"
+msgstr ""
+
+#: Models/Visit.php:608
+msgid "Invalid date."
+msgstr ""
+
+#: Services/API/BunnyStorageRemoteAPI.php:34
+msgid "Please add an API Key"
+msgstr ""
+
+#: Services/API/RestActiveCampaignController.php:29
+#: Services/API/RestEmailCollectionController.php:26
+#: Services/API/RestMailchimpController.php:34
+#: Services/API/RestMailerLiteController.php:29
+msgid "Your API key"
+msgstr ""
+
+#: Services/API/RestActiveCampaignController.php:34
+msgid "Your API url"
+msgstr ""
+
+#: Services/API/RestAnalyticsController.php:105
+#: Services/API/RestAnalyticsController.php:131
+#: Services/API/RestAnalyticsController.php:157
+#: Services/API/RestAnalyticsController.php:213
+#: Services/API/RestAnalyticsController.php:239
+#: Services/API/RestAnalyticsController.php:265
+#: Services/API/RestAnalyticsController.php:630
+msgid "Limit response to posts published after a given ISO8601 compliant date."
+msgstr ""
+
+#: Services/API/RestAnalyticsController.php:110
+#: Services/API/RestAnalyticsController.php:136
+#: Services/API/RestAnalyticsController.php:162
+#: Services/API/RestAnalyticsController.php:218
+#: Services/API/RestAnalyticsController.php:244
+#: Services/API/RestAnalyticsController.php:270
+#: Services/API/RestAnalyticsController.php:635
+msgid "Limit response to posts published before a given ISO8601 compliant date."
+msgstr ""
+
+#: Services/API/RestAnalyticsController.php:589
+msgid "Unique identifier for the object."
+msgstr ""
+
+#: Services/API/RestAnalyticsController.php:595
+msgid "ID of user who made the visit."
+msgstr ""
+
+#: Services/API/RestAnalyticsController.php:599
+msgid "Duration of the view."
+msgstr ""
+
+#: Services/API/RestAnalyticsController.php:603
+msgid "ID of the video"
+msgstr ""
+
+#: Services/API/RestAnalyticsController.php:640
+#: Services/API/RestAnalyticsController.php:644
+msgid "Get a current page"
+msgstr ""
+
+#: Services/API/RestBunnyCDNController.php:623
+#: Services/API/RestBunnyStreamController.php:496
+#: Services/API/RestBunnyStreamController.php:591
+msgid "Please send a file."
+msgstr ""
+
+#: Services/API/RestBunnyCDNController.php:664
+#: Services/API/RestBunnyStreamController.php:535
+#: Services/API/RestBunnyStreamController.php:628
+msgid "Sorry, this file type is not permitted for security reasons."
+msgstr ""
+
+#: Services/API/RestEmailCollectionController.php:64
+msgid "There is nothing to export."
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:34
+msgctxt "post type general name"
+msgid "Email Submissions"
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:35
+msgctxt "post type singular name"
+msgid "Submission"
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:36
+msgctxt "admin menu"
+msgid "Submissions"
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:37
+msgctxt "add new on admin bar"
+msgid "Email Submission"
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:38
+msgctxt "Email Submission"
+msgid "Add New"
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:39
+msgid "Add New Submission"
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:40
+msgid "New Submission"
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:41
+msgid "Edit Submission"
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:42
+msgid "View Submission"
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:43
+#: Services/EmailCollection/EmailCollection.php:72
+msgid "Email Submissions"
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:44
+msgid "Search Submissions"
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:45
+msgid "No Submissions found."
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:46
+msgid "No Submissions found in Trash."
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:47
+msgid "Filter Submissions list"
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:48
+msgid "Submissions list navigation"
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:49
+msgid "Submissions list"
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:50
+msgid "Submission published."
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:51
+msgid "Submission published privately."
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:52
+msgid "Submission reverted to draft."
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:53
+msgid "Submission scheduled."
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:54
+msgid "Submission updated."
+msgstr ""
+
+#: Services/EmailCollection/EmailCollection.php:73
+msgid "Emails"
+msgstr ""
+
+#: Services/EmailCollection/EmailCollectionAjaxHandler.php:128
+msgid "Please enter a valid email address"
+msgstr ""
+
+#: Services/EmailCollection/EmailCollectionMetaBox.php:46
+msgid "Submission Details"
+msgstr ""
+
+#: Services/EmailCollection/EmailCollectionMetaBox.php:68
+#: Services/EmailCollection/EmailCollectionMetaBox.php:112
+msgid "Email"
+msgstr ""
+
+#: Services/EmailCollection/EmailCollectionMetaBox.php:113
+msgid "Video"
+msgstr ""
+
+#: Services/EmailCollection/EmailCollectionMetaBox.php:114
+msgid "Preset"
+msgstr ""
+
+#: Services/License/AutoUpdate.php:98
+msgid "An error occour when try to identify the pluguin."
+msgstr ""
+
+#: Services/License/AutoUpdate.php:98
+#: Services/License/AutoUpdate.php:111
+msgid "Try again"
+msgstr ""
+
+#: Services/License/AutoUpdate.php:111
+msgid "An Unexpected HTTP Error occurred during the API request."
+msgstr ""
+
+#: Services/License/License.php:137
+msgid "Presto Player Pro plugin is inactive, please enter your"
+msgstr ""
+
+#: Services/License/License.php:139
+msgid "Licence Key"
+msgstr ""
+
+#: Services/License/License.php:153
+msgid "License"
+msgstr ""
+
+#: Services/License/License.php:186
+#: Services/License/License.php:226
+msgid "License Key"
+msgstr ""
+
+#: Services/License/License.php:198
+#: Services/License/License.php:238
+msgid "Enter the Licence Key you received when purchased this product. If you lost the key, you can always retrieve it from"
+msgstr ""
+
+#: Services/License/License.php:198
+#: Services/License/License.php:238
+msgid "My Account"
+msgstr ""
+
+#: Services/License/License.php:203
+msgid "Save"
+msgstr ""
+
+#: Services/License/License.php:236
+msgid "Deactivate"
+msgstr ""
+
+#: Services/Settings.php:32
+msgid "Bunny.net public video stream settings."
+msgstr ""
+
+#: Services/Settings.php:65
+msgid "Bunny.net stream general settings."
+msgstr ""
+
+#: Services/Settings.php:92
+msgid "Bunny.net private video stream settings."
+msgstr ""
+
+#: Services/Settings.php:126
+#: Services/Settings.php:144
+msgid "Bunny.net settings."
+msgstr ""
+
+#: Services/Settings.php:162
+msgid "A generated unique install id for Bunny.net."
+msgstr ""
+
+#: Services/Settings.php:173
+msgid "Mailchimp settings."
+msgstr ""
+
+#: Services/Settings.php:201
+msgid "Mailerlite settings."
+msgstr ""
+
+#: Services/Settings.php:229
+msgid "ActiveCampaign settings."
+msgstr ""
+
+#: Services/Settings.php:261
+msgid "Is fluent crm connected"
+msgstr ""
+
+#: Services/Settings.php:287
+msgid "License settings."
+msgstr ""
+
+#: Services/Visits.php:107
+msgid "Presto Player"
+msgstr ""
+
+#: Services/Visits.php:111
+msgid "User View Analytics"
+msgstr ""
+
+#: Services/Visits.php:115
+msgid "View Analytics"
+msgstr ""
+
+#: Support/RestEmailProviderController.php:39
+msgid "Please connect this service to use this integration."
+msgstr ""

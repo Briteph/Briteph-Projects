@@ -1,0 +1,32 @@
+{
+  "admin.css": "blocks/admin-55850041.css",
+  "admin.css.map": "blocks/admin-55850041.css.map",
+  "admin.js": "blocks/admin-e1ab6c7a.js",
+  "admin.js.map": "blocks/admin-e1ab6c7a.js.map",
+  "runtime.js": "blocks/runtime-864c826f.js",
+  "runtime.js.map": "blocks/runtime-864c826f.js.map",
+  "vendors--presto-player--admin.js": "blocks/vendors--presto-player--admin-312437ee.js",
+  "vendors--presto-player--admin.js.map": "blocks/vendors--presto-player--admin-312437ee.js.map",
+  "wpackioEp": {
+    "admin": {
+      "assets": {
+        "js": [
+          "blocks/runtime-864c826f.js",
+          "blocks/vendors--presto-player--admin-312437ee.js",
+          "blocks/admin-e1ab6c7a.js"
+        ],
+        "js.map": [
+          "blocks/runtime-864c826f.js.map",
+          "blocks/vendors--presto-player--admin-312437ee.js.map",
+          "blocks/admin-e1ab6c7a.js.map"
+        ],
+        "css": [
+          "blocks/admin-55850041.css"
+        ],
+        "css.map": [
+          "blocks/admin-55850041.css.map"
+        ]
+      }
+    }
+  }
+}

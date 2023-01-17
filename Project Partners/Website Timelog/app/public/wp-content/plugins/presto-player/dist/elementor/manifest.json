@@ -1,0 +1,20 @@
+{
+  "editor.js": "elementor/editor-38cd1bfd.js",
+  "editor.js.map": "elementor/editor-38cd1bfd.js.map",
+  "runtime.js": "elementor/runtime-5c0725d1.js",
+  "runtime.js.map": "elementor/runtime-5c0725d1.js.map",
+  "wpackioEp": {
+    "editor": {
+      "assets": {
+        "js": [
+          "elementor/runtime-5c0725d1.js",
+          "elementor/editor-38cd1bfd.js"
+        ],
+        "js.map": [
+          "elementor/runtime-5c0725d1.js.map",
+          "elementor/editor-38cd1bfd.js.map"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+*.TODO
+
+*.sublime-workspace
+*.sublime-project
+
+*.code-workspace

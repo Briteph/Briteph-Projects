@@ -1,0 +1,89 @@
+********************************************************************************
+DUPLICATOR-LITE PACKAGE-LOG: November 8, 2021 12:36 pm
+NOTICE: Do NOT post to public sites or forums 
+********************************************************************************
+VERSION:	1.4.3
+WORDPRESS:	5.8.1
+PHP INFO:	8.0.12 | SAPI: litespeed
+SERVER:		LiteSpeed 
+PHP TIME LIMIT: (0) no time limit imposed 
+PHP MAX MEMORY: 4294967296 (256M default) 
+MEMORY STACK: 2MB
+
+********************************************************************************
+DATABASE:
+********************************************************************************
+BUILD MODE:   PHP(query limit - 100)
+MYSQLTIMEOUT: 5000
+MYSQLDUMP:    Not Supported
+TABLES: total:58 | filtered:0 | create:58
+FILTERED: []
+SQL CREATED: 20211108_projectpartnersdashboard_6e3ac914186fe7009177_20211108123550_database.sql
+SQL FILE SIZE: 4.52MB (4744413)
+SQL FILE TIME: 2021-11-08 12:36:00
+SQL RUNTIME: 0.52 sec.
+
+********************************************************************************
+ARCHIVE (ZIP):
+********************************************************************************
+ARCHIVE DIR:  /home/projectpartners/webapps/MyProjectPartners
+ARCHIVE FILE: 20211108_projectpartnersdashboard_6e3ac914186fe7009177_20211108123550_archive.zip
+FILTERS: *OFF*
+DIRS:
+	not set
+FILES:
+	not set
+EXTS:  not set
+----------------------------------------
+COMPRESSING
+SIZE:	126.13MB
+STATS:	Dirs 1,299 | Files 7,804
+SQL ADDED: 20211108_projectpartnersdashboard_6e3ac914186fe7009177_20211108123550_database.sql
+ZipArchive Object
+(
+    [lastId] => 9102
+    [status] => 0
+    [statusSys] => 0
+    [numFiles] => 9103
+    [filename] => /home/projectpartners/webapps/MyProjectPartners/wp-content/backups-dup-lite/tmp/20211108_projectpartnersdashboard_6e3ac914186fe7009177_20211108123550_archive.zip
+    [comment] => 
+)
+
+FILE ADDED TO ZIP: 9102
+COMPRESSION RESULT: '1'
+COMPRESSED SIZE: 49.16MB
+ARCHIVE RUNTIME: 17.58 sec.
+MEMORY STACK: 4MB
+building installer
+[PHP ERR][WARN] MSG:is_readable(): open_basedir restriction in effect. File(/dev/urandom) is not within the allowed path(s): (/home/projectpartners/webapps/MyProjectPartners:/var/lib/php/session:/tmp) [CODE:2|FILE:/home/projectpartners/webapps/MyProjectPartners/wp-content/plugins/duplicator/classes/class.password.php|LINE:63]
+do_action('wp_ajax_duplicator_package_build'), WP_Hook->do_action, WP_Hook->apply_filters, duplicator_package_build, DUP_Package->runZipBuild, DUP_Installer->build, DUP_Installer->create_enhanced_installer_files, DUP_Installer->create_archive_config_file, DUP_PasswordHash->HashPassword, DUP_PasswordHash->get_random_bytes, is_readable, DUP_Handler::error, DUP_Handler::getMessage
+add_extra_files1
+add_extra_files2
+add_extra_files3
+add_extra_files4
+Doing archive file check
+add_extra_files5
+add_extra_files6
+add_extra_files8
+Successfully opened zip /home/projectpartners/webapps/MyProjectPartners/wp-content/backups-dup-lite/tmp/20211108_projectpartnersdashboard_6e3ac914186fe7009177_20211108123550_archive.zip
+Adding enhanced installer files to archive using ZipArchive
+Installer files added to archive
+Added to archive
+After ziparchive close when adding installer
+
+********************************************************************************
+INTEGRITY CHECKS:
+********************************************************************************
+SQL FILE: 4.52MB
+INSTALLER FILE: 64.27KB
+ARCHIVE FILE: 50.19MB 
+EXPECTED FILE/DIRECTORY COUNT: 9,103
+ACTUAL FILE/DIRECTORY COUNT: 9,102
+ARCHIVE CONSISTENCY TEST: Pass
+
+********************************************************************************
+RECORD ID:[2]
+TOTAL PROCESS RUNTIME: 18.75 sec.
+PEAK PHP MEMORY USED: 6MB
+DONE PROCESSING => 20211108_projectpartnersdashboard November 8, 2021 12:36 pm
+

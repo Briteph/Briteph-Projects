@@ -1,0 +1,12 @@
+{
+  "dependencies": [
+    "wp-block-editor",
+    "wp-components",
+    "wp-compose",
+    "wp-data",
+    "wp-editor",
+    "wp-element",
+    "wp-i18n"
+  ],
+  "version": "e41cb1b6e512ab6f9eb0b12e0193fee0"
+}

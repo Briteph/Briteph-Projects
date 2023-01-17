@@ -1,0 +1,20 @@
+{
+  "learndash.js": "integrations/learndash-8774a633.js",
+  "learndash.js.map": "integrations/learndash-8774a633.js.map",
+  "runtime.js": "integrations/runtime-2b3b8544.js",
+  "runtime.js.map": "integrations/runtime-2b3b8544.js.map",
+  "wpackioEp": {
+    "learndash": {
+      "assets": {
+        "js": [
+          "integrations/runtime-2b3b8544.js",
+          "integrations/learndash-8774a633.js"
+        ],
+        "js.map": [
+          "integrations/runtime-2b3b8544.js.map",
+          "integrations/learndash-8774a633.js.map"
+        ]
+      }
+    }
+  }
+}

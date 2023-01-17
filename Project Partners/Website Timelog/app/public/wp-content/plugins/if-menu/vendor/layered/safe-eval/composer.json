@@ -1,0 +1,25 @@
+{
+    "name": "layered/safe-eval",
+    "description": "Safely evaluate code expressions",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andrei Igna",
+            "email": "andrei@laye.red"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "autoload": {
+        "psr-4": { "Layered\\SafeEval\\": "" },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
+    }
+}

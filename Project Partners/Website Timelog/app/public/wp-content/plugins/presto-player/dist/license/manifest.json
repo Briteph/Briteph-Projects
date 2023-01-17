@@ -1,0 +1,28 @@
+{
+  "admin.css": "license/admin-dc762168.css",
+  "admin.css.map": "license/admin-dc762168.css.map",
+  "admin.js": "license/admin-c99b120a.js",
+  "admin.js.map": "license/admin-c99b120a.js.map",
+  "runtime.js": "license/runtime-3dc1238b.js",
+  "runtime.js.map": "license/runtime-3dc1238b.js.map",
+  "wpackioEp": {
+    "admin": {
+      "assets": {
+        "js": [
+          "license/runtime-3dc1238b.js",
+          "license/admin-c99b120a.js"
+        ],
+        "js.map": [
+          "license/runtime-3dc1238b.js.map",
+          "license/admin-c99b120a.js.map"
+        ],
+        "css": [
+          "license/admin-dc762168.css"
+        ],
+        "css.map": [
+          "license/admin-dc762168.css.map"
+        ]
+      }
+    }
+  }
+}
