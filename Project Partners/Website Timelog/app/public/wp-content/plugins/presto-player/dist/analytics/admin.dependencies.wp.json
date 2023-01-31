@@ -1,7 +1,0 @@
-{
-  "dependencies": [
-    "wp-api-fetch",
-    "wp-components"
-  ],
-  "version": "aa66148550c83ff143ada9c4e3b1d8ef"
-}
