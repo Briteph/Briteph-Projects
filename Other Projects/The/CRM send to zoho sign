@@ -1,0 +1,175 @@
+deal = zoho.crm.getRecordById("Potentials",id);
+//get writer merge fields--------------------------------------------------------------------------------------------------------
+writer = zoho.writer.getMergeFields("s8ig75080550b8eea4ed29028eda4ba523c53","writer_connection");
+//clean-string
+result = deal.get("Amount").round(2).remove("-").toString().replaceAll("(?<!\.\d)(?<=\d)(?=(?:\d\d\d)+\b)",",");
+result_amount = "$" + result;
+//merge to writer-----------------------------------------------------------------------------------------------------------------
+to_merge = Map();
+to_merge.put("Account_Name",deal.get("Account_Name").get("name"));
+to_merge.put("Amount",result_amount);
+file_name = "Accounting Services Proposal for " + deal.get("Account_Name").get("name");
+output_settings = Map();
+output_settings.put("doc_name",file_name);
+output_settings.put("folder_id","s8ig708289e3dfa454ac684998fb7f774843d");
+output_settings.put("output_format","pdf");
+res = zoho.writer.mergeAndStore("lfgfwec5e44c552ad456488cb49166629eafa",to_merge,output_settings,"writer_connection");
+//update writer id----------------------------------------------------------------------------------------------------------------
+docID = res.get("document_id");
+update_field = Map();
+update_field.put("writer_url",res.get("document_id"));
+response = zoho.crm.updateRecord("Potentials",id,update_field);
+//download the file from workdrive------------------------------------------------------------------------------------------------
+header = Map();
+header.put("Accept","application/vnd.api+json");
+fileRes = invokeurl
+[
+	url :"https://download.zoho.com/v1/workdrive/download/" + docID
+	type :GET
+	headers:header
+	connection:"workdrive_connection"
+];
+//download file to crm file-------------------------------------------------------------------------------------------------------
+fileRes.setParamName("file");
+response = invokeurl
+[
+	url :"https://www.zohoapis.com/crm/v2.1/files"
+	type :POST
+	files:fileRes
+	connection:"crm_connection"
+];
+//get-id
+fileID = response.get("data").get(0).get("details").get("id");
+// //send email with attachment-------------------------------------------------------------------------------------------------------
+// contact_id = deal.get("Contact_Name").get("id");
+// contact = zoho.crm.getRecordById("Contacts",contact_id);
+// contact_email = contact.get("Email");
+// email_mp = Map();
+// email_mp.put("from",{"user_name":"zoho admin","email":zoho.loginuserid});
+// email_mp.put("to",{{"email":contact_email}});
+// email_mp.put("subject","Proposal Test");
+// email_mp.put("attachments",{{"id":fileID.toString()}});
+// email_mp.put("template",{"id":"5029962000000457467"});
+// email_mp_list = List();
+// email_mp_list.add(email_mp);
+// final_mp = {"data":email_mp_list};
+// //send-api
+// Resp = invokeurl
+// [
+// 	url :"https://www.zohoapis.com/crm/v2.1/Potentials/" + id + "/actions/send_mail"
+// 	type :POST
+// 	parameters:final_mp.toString()
+// 	connection:"crm_connection"
+// ];
+// info Resp;
+// //attach the file in zoho crm-----------------------------------------------------------------------------------------------------
+// attachresponse = zoho.crm.attachFile("Potentials",id,fileRes);
+//ZOHO SIGN-----------------------------------------------------------------------------------------------------------------------
+mapD = Map();
+res = zoho.sign.createDocument(fileRes,mapD,"sign_connection");
+owner_name = res.get('requests').get("owner_first_name") + res.get('requests').get("owner_last_name");
+owner_email = res.get('requests').get("owner_email");
+//
+update_field = Map();
+update_field.put("Zoho_Sign_URL",res.get('requests').get("request_url"));
+response = zoho.crm.updateRecord("Potentials",id,update_field);
+//
+req_id = res.get('requests').get('request_id');
+doc_id = res.get('requests').get('document_ids').get(0).get('document_id');
+reciMap1 = Map();
+reciMap1.put("recipient_name","khentandaya");
+reciMap1.put("recipient_email","khentandaya@gmail.com");
+reciMap1.put("action_type","SIGN");
+reciMap1.put("signing_order",0);
+fieldList1 = List();
+textField1 = Map();
+textField1.put("field_name","Full Name");
+textField1.put("is_mandatory","true");
+textField1.put("field_type_name","Name");
+textField1.put("document_id",doc_id);
+textField1.put("x_coord",33);
+textField1.put("y_coord",405);
+textField1.put("abs_width",98);
+textField1.put("abs_height",13);
+textField1.put("page_no",6);
+signatureField1 = Map();
+signatureField1.put("field_name","Signature");
+signatureField1.put("is_mandatory","true");
+signatureField1.put("field_type_name","Signature");
+signatureField1.put("document_id",doc_id);
+signatureField1.put("x_coord",33);
+signatureField1.put("y_coord",435);
+signatureField1.put("abs_width",140);
+signatureField1.put("abs_height",30);
+signatureField1.put("page_no",6);
+dateField1 = Map();
+dateField1.put("field_name","Date - 1");
+dateField1.put("is_mandatory","true");
+dateField1.put("field_type_name","CustomDate");
+dateField1.put("document_id",doc_id);
+dateField1.put("time_zone","US/Central");
+dateField1.put("x_coord",33);
+dateField1.put("y_coord",475);
+dateField1.put("abs_width",98);
+dateField1.put("abs_height",13);
+dateField1.put("page_no",6);
+fieldList1.add(textField1);
+fieldList1.add(signatureField1);
+fieldList1.add(dateField1);
+reciMap1.put("fields",fieldList1);
+//RECIPIENT 2---------------------------------------------------------------------------------------------------------------------
+reciMap2 = Map();
+reciMap2.put("recipient_name","kazueyah");
+reciMap2.put("recipient_email","kazueyah@gmail.com");
+reciMap2.put("action_type","SIGN");
+reciMap2.put("signing_order",0);
+fieldList2 = List();
+textField2 = Map();
+textField2.put("field_name","Full Name");
+textField2.put("is_mandatory","true");
+textField2.put("field_type_name","Name");
+textField2.put("document_id",doc_id);
+textField2.put("x_coord",356);
+textField2.put("y_coord",405);
+textField2.put("abs_width",98);
+textField2.put("abs_height",13);
+textField2.put("page_no",6);
+signatureField2 = Map();
+signatureField2.put("field_name","Signature");
+signatureField2.put("is_mandatory","true");
+signatureField2.put("field_type_name","Signature");
+signatureField2.put("document_id",doc_id);
+signatureField2.put("x_coord",356);
+signatureField2.put("y_coord",435);
+signatureField2.put("abs_width",140);
+signatureField2.put("abs_height",30);
+signatureField2.put("page_no",6);
+dateField2 = Map();
+dateField2.put("field_name","Date - 2");
+dateField2.put("is_mandatory","true");
+dateField2.put("field_type_name","CustomDate");
+dateField2.put("document_id",doc_id);
+dateField2.put("time_zone","US/Central");
+dateField2.put("x_coord",356);
+dateField2.put("y_coord",475);
+dateField2.put("abs_width",98);
+dateField2.put("abs_height",13);
+dateField2.put("page_no",6);
+fieldList2.add(textField2);
+fieldList2.add(signatureField2);
+fieldList2.add(dateField2);
+reciMap2.put("fields",fieldList2);
+//recipient list------------------------------------------------------------------------------------------------------------------
+reciList = List();
+reciList.add(reciMap1);
+reciList.add(reciMap2);
+request = Map();
+request.put("actions",reciList);
+data = Map();
+data.put("requests",request);
+updateMap = Map();
+updateMap.put("data",data);
+res = zoho.sign.submitRequest(req_id,updateMap,"sign_connection");
+info res;
+// res = zoho.sign.getDocumentById(155459000000258027, "sign_connection");
+// info res;
