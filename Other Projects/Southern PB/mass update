@@ -1,0 +1,22 @@
+id_list = ids.toList("|||");
+userRes = invokeurl
+[
+	url :"https://www.zohoapis.com/crm/v3/users?type=AllUsers"
+	type :GET
+	connection:"crm_connection"
+];
+user_list = userRes.get("users");
+for each  id in id_list
+{
+	bookjob = zoho.crm.getRecordById("Book_Jobs",id);
+	owner = bookjob.get("Book_Job_Owner");
+	for each  user in user_list
+	{
+		if(owner == user.get("full_name"))
+		{
+			res = zoho.crm.updateRecord("Book_Jobs",id,{"Owner":user.get("id")});
+			info res;
+		}
+	}
+}
+return "Function executed successfully";
