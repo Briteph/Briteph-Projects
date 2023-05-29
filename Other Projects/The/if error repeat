@@ -1,0 +1,22 @@
+res = zoho.crm.getRecordById("Potentials", id);
+
+
+loop = "loop.".repeat(5).toList(".");
+retries = 0;
+for each l in loop
+{
+	try
+	{
+		info l + " success";
+		type = res.get("Type").toLong();
+		break;
+	}
+	catch(e)
+	{
+		retries += 1;
+		info l + " error";
+		info e.message;
+	}
+}
+
+info retries;
